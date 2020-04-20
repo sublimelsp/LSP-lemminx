@@ -1,0 +1,66 @@
+{
+	"enabled": true,
+	"languages": [
+		{
+			"languageId": "xml",
+			"scopes": ["text.xml"],
+			"syntaxes": [
+				"Packages/PackageDev/Package/Property List/Property List.sublime-syntax",
+				"Packages/PackageDev/Package/Sublime Text Snippet/Sublime Text Snippet.sublime-syntax",
+				"Packages/PackageDev/Package/TextMate Preferences/TextMate Preferences.sublime-syntax",
+				"Packages/XML/XML.sublime-syntax",
+			],
+		}
+	],
+	"env": {
+	},
+	"settings": {
+		"xml": {
+		    "catalogs": [
+		    ],
+		    "fileAssociations": [
+		        {
+		            "systemId": "",
+		            "pattern": "",
+		        }
+		    ],
+		    "server": {
+		        "workDir": "~/.lemminx"
+		    },
+
+		    "completion": {
+		        "autoCloseTags": true
+		    },
+		    "format": {
+		        "enabled": true,
+		        "formatComments": true,
+		        "joinCDATALines": false,
+		        "joinCommentLines": false,
+		        "joinContentLines": false,
+		        "preservedNewlines": 2,
+		        "preserveEmptyContent": false,
+		        "quotations": "doubleQuotes",
+		        "spaceBeforeEmptyCloseTag": true,
+		        "splitAttributes": false
+		    },
+		    "symbols": {
+		        "enabled": true,
+		        "excluded": []
+		    },
+		    "validation": {
+		        "enabled": true,
+		        "noGrammar": "hint",
+		        "schema": true,
+		        "disallowDocTypeDecl": false,
+		        "resolveExternalEntities": false
+		    },
+
+		    "logs": {
+		        "client": true
+		    },
+		    "trace": {
+		        "server": "messages"
+		    }
+		}
+	}
+}
