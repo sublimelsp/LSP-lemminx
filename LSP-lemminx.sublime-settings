@@ -59,6 +59,7 @@
 
 			"logs": {
 				"client": true,
+				"file": "logs"
 			},
 			"trace": {
 				"server": "errors"
