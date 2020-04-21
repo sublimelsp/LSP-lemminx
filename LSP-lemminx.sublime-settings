@@ -16,51 +16,53 @@
 	},
 	"settings": {
 		"xml": {
-		    "catalogs": [
-		    ],
-		    "fileAssociations": [
-		        {
-		            "systemId": "",
-		            "pattern": "",
-		        }
-		    ],
-		    "server": {
-		        "workDir": "~/.lemminx"
-		    },
+			"catalogs": [
+			],
+			"fileAssociations": [
+				{
+					"systemId": "",
+					"pattern": "",
+				}
+			],
+			"server": {
+				"workDir": "~/.lemminx"
+			},
 
-		    "completion": {
-		        "autoCloseTags": true
-		    },
-		    "format": {
-		        "enabled": true,
-		        "formatComments": true,
-		        "joinCDATALines": false,
-		        "joinCommentLines": false,
-		        "joinContentLines": false,
-		        "preservedNewlines": 2,
-		        "preserveEmptyContent": false,
-		        "quotations": "doubleQuotes",
-		        "spaceBeforeEmptyCloseTag": true,
-		        "splitAttributes": false
-		    },
-		    "symbols": {
-		        "enabled": true,
-		        "excluded": []
-		    },
-		    "validation": {
-		        "enabled": true,
-		        "noGrammar": "hint",
-		        "schema": true,
-		        "disallowDocTypeDecl": false,
-		        "resolveExternalEntities": false
-		    },
+			"completion": {
+				"autoCloseTags": true
+			},
+			"format": {
+				"enabled": true,
+				"formatComments": true,
+				"insertSpaces": false,
+				"joinCDATALines": false,
+				"joinCommentLines": false,
+				"joinContentLines": false,
+				"preservedNewlines": 2,
+				"preserveEmptyContent": false,
+				"quotations": "doubleQuotes",
+				"spaceBeforeEmptyCloseTag": true,
+				"splitAttributes": false,
+				"tabSize": 4
+			},
+			"symbols": {
+				"enabled": true,
+				"excluded": []
+			},
+			"validation": {
+				"enabled": true,
+				"noGrammar": "hint",
+				"schema": true,
+				"disallowDocTypeDecl": false,
+				"resolveExternalEntities": false
+			},
 
-		    "logs": {
-		        "client": true
-		    },
-		    "trace": {
-		        "server": "messages"
-		    }
+			"logs": {
+				"client": true,
+			},
+			"trace": {
+				"server": "errors"
+			}
 		}
 	}
 }
