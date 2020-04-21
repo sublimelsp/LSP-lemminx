@@ -19,10 +19,22 @@
 			"catalogs": [
 			],
 			"fileAssociations": [
-				{
-					"systemId": "",
-					"pattern": "",
-				}
+                {
+                    "pattern": "**/*.hidden-theme",
+                    "systemId": "https://www.apple.com/DTDs/PropertyList-1.0.dtd"
+                },
+                {
+                    "pattern": "**/*.sublime-snippet",
+                    "systemId": "https://www.apple.com/DTDs/PropertyList-1.0.dtd"
+                },
+                {
+                    "pattern": "**/*.tmPreferences",
+                    "systemId": "https://www.apple.com/DTDs/PropertyList-1.0.dtd"
+                },
+                {
+                    "pattern": "**/*.tmTheme",
+                    "systemId": "https://www.apple.com/DTDs/PropertyList-1.0.dtd"
+                }
 			],
 			"server": {
 				"workDir": "~/.lemminx"
