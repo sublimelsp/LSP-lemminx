@@ -104,14 +104,17 @@ class LspXMLServer(object):
 
 
 class LspXMLPlugin(LanguageHandler):
+
+    def __init__(self):
+        super().__init__()
+        LspXMLServer.setup()
+
     @property
     def name(self) -> str:
         return __package__.lower()
 
     @property
     def config(self) -> ClientConfig:
-
-        LspXMLServer.setup()
 
         default_configuration = {
             "enabled": True,
