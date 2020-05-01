@@ -21,6 +21,26 @@ def package_cache() -> str:
     return cache_path
 
 
+def merge_configs(target: dict, source: dict):
+    for key, value in target.items():
+        new_value = source.get(key)
+        if new_value is not None:
+            if isinstance(value, dict):
+                yield key, dict(merge_configs(value, new_value))
+            elif isinstance(value, list):
+                if isinstance(value[0], dict):
+                    # dicts are unhashable
+                    yield key, new_value
+                else:
+                    # always merge user values into defaults
+                    yield key, list(set(value) + set(new_value))
+            else:
+                yield key, new_value
+        else:
+            yield key, value
+    return None
+
+
 class LspXMLServer(object):
     binary = None
     checksum = None
@@ -115,22 +135,22 @@ class LspXMLPlugin(LanguageHandler):
 
     @property
     def config(self) -> ClientConfig:
+        settings_file = "LSP-lemminx.sublime-settings"
+        
         client_config = {
             "enabled": True,
             "command": ["java", "-jar", LspXMLServer.binary],
         }
 
-        default_config = {
-            "env": {},
-            "languages": [],
-            "initializationOptions": {},
-            "settings": {},
-        }
+        default_config = sublime.decode_value(
+            sublime.load_resource(
+                "Packages/{}/{}".format(__package__, settings_file)
+            )
+        )
 
-        loaded_settings = sublime.load_settings("LSP-lemminx.sublime-settings")
-        if loaded_settings:
-            for key, value in default_config.items():
-                client_config[key] = loaded_settings.get(key, value)
+        user_config = sublime.load_settings(settings_file)
+        for key, value in merge_configs(default_config, user_config):
+            client_config[key] = value
 
         return read_client_config(self.name, client_config)
 
