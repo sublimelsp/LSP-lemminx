@@ -95,7 +95,7 @@ class LspXMLServer(object):
                     pass
 
     @classmethod
-    def teardown(cls) -> None:
+    def cleanup(cls) -> None:
         cls.binary = None
         cls.checksum = None
         cls.ready = False
@@ -142,4 +142,4 @@ def plugin_loaded() -> None:
 
 
 def plugin_unloaded() -> None:
-    LspXMLServer.teardown()
+    LspXMLServer.cleanup()
