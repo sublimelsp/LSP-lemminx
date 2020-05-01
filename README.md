@@ -11,7 +11,7 @@ Uses [XML Language Server (LemMinX)](https://github.com/eclipse/lemminx) to prov
 
 ### Notes:
 
-1. The LemMinX requires the Java Runtime (JRE) to be installed. To check that, run `java -version` in your login shell.
+1. LemMinX requires the Java Runtime (JRE) to be installed. To check that, run `java -version` in your login shell.
 2. The plugin does not distribute, but download the `org.eclipse.lemminx-${version}-uber.jar` binary from the official source.
 
 
