@@ -115,18 +115,24 @@ class LspXMLPlugin(LanguageHandler):
 
     @property
     def config(self) -> ClientConfig:
-
-        default_configuration = {
+        client_config = {
             "enabled": True,
             "command": ["java", "-jar", LspXMLServer.binary],
         }
 
+        default_config = {
+            "env": {},
+            "languages": [],
+            "initializationOptions": {},
+            "settings": {},
+        }
+
         loaded_settings = sublime.load_settings("LSP-lemminx.sublime-settings")
         if loaded_settings:
-            for key in ("env", "languages", "initializationOptions", "settings"):
-                default_configuration[key] = loaded_settings.get(key)
+            for key, value in default_config.items():
+                client_config[key] = loaded_settings.get(key, value)
 
-        return read_client_config(self.name, default_configuration)
+        return read_client_config(self.name, client_config)
 
     def on_start(self, window) -> bool:
         if not is_java_installed():
