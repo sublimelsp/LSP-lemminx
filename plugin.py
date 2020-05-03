@@ -25,19 +25,25 @@ def merge_configs(target: dict, source: dict):
     for key, value in target.items():
         new_value = source.get(key)
         if new_value is not None:
-            if isinstance(value, dict):
-                yield key, dict(merge_configs(value, new_value))
-            elif isinstance(value, list):
-                if isinstance(value[0], dict):
-                    # dicts are unhashable
-                    yield key, new_value
-                else:
+            if value:
+                if isinstance(value, dict):
+                    yield key, dict(merge_configs(value, new_value))
+                    continue
+
+                if isinstance(value, list):
+                    if isinstance(value[0], dict):
+                        # dicts are unhashable
+                        yield key, new_value
+                        continue
                     # always merge user values into defaults
                     yield key, list(set(value) + set(new_value))
-            else:
-                yield key, new_value
+                    continue
+
+            yield key, new_value
+
         else:
             yield key, value
+
     return None
 
 
