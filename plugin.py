@@ -39,7 +39,7 @@ class Lemminx(AbstractPlugin):
     @classmethod
     def install_or_update(cls) -> None:
         """
-        Called after needs_update_or_installation returns False. Already runs
+        Called after needs_update_or_installation returns True. Already runs
         in a separate thread from the UI thread, don't spawn threads.
         """
         urllib.request.urlretrieve(url=cls.url, filename=cls.binary)
