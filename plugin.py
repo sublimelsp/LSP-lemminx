@@ -9,7 +9,7 @@ from LSP.plugin import ClientConfig
 from LSP.plugin import register_plugin  # https://github.com/sublimelsp/LSP/issues/899
 from LSP.plugin import unregister_plugin  # https://github.com/sublimelsp/LSP/issues/899
 from LSP.plugin import WorkspaceFolder
-from LSP.plugin.core.typing import List, Optional, Dict
+from LSP.plugin.core.typing import List, Optional
 
 
 class Lemminx(AbstractPlugin):
@@ -21,21 +21,19 @@ class Lemminx(AbstractPlugin):
 
     @classmethod
     def name(cls) -> str:
-        return 'lemminx'
+        return cls.__name__.lower()
 
     @classmethod
-    def additional_variables(cls) -> Optional[Dict[str, str]]:
-        """
-        Additional template variables for expansion in
-        LSP-lemminx.sublime-settings
-        """
-        assert isinstance(cls.version, str)
-        return {'version': cls.version}
+    def configuration(cls) -> sublime.Settings:
+        if not cls.binary:
+            # mega hack, remove! https://github.com/sublimelsp/LSP/issues/899
+            plugin_loaded()
+        settings = super().configuration()
+        settings.set("command", ["java", "-jar", cls.binary])
+        return settings
 
     @classmethod
     def needs_update_or_installation(cls) -> bool:
-        # mega hack, remove! https://github.com/sublimelsp/LSP/issues/899
-        plugin_loaded()
         return not cls._is_valid_binary()
 
     @classmethod
@@ -84,7 +82,7 @@ def plugin_loaded() -> None:
     Lemminx.version = server_json["version"]
     Lemminx.url = sublime.expand_variables(
         server_json["url"],
-        Lemminx.additional_variables())
+        {"version": Lemminx.version})
     Lemminx.checksum = server_json["sha256"].lower()
     # built local server binary path
     dest_path = _package_cache()

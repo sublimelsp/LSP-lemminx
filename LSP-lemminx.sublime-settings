@@ -1,5 +1,4 @@
 {
-	"command": ["java", "-jar", "${cache_path}/LSP-lemminx/org.eclipse.lemminx-${version}-uber.jar"],
 	"languages": [
 		{
 			"languageId": "xml",
