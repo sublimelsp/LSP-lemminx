@@ -114,11 +114,11 @@ class LspXMLServer(object):
         # clear old server binaries
         for fn in os.listdir(dest_path):
             fp = os.path.join(dest_path, fn)
-            if fn[-4:].lower() == ".jar" and not os.path.samefile(fp, cls.binary):
-                try:
+            try:
+                if fn[-4:].lower() == ".jar" and not os.path.samefile(fp, cls.binary):
                     os.remove(fp)
-                except OSError:
-                    pass
+            except OSError:
+                pass
 
     @classmethod
     def cleanup(cls) -> None:
