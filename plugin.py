@@ -4,9 +4,9 @@ import sublime
 
 from urllib.request import urlretrieve
 
-from LSP.plugin.core.sessions import AbstractPlugin
-from LSP.plugin.core.sessions import register_plugin
-from LSP.plugin.core.sessions import unregister_plugin
+from LSP.plugin import AbstractPlugin
+from LSP.plugin import register_plugin
+from LSP.plugin import unregister_plugin
 
 
 SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.12.0/org.eclipse.lemminx-0.12.0-uber.jar"
