@@ -1,24 +1,21 @@
 import os
 import hashlib
 import shutil
-import threading
-import urllib.request
 import sublime
+import threading
 
+from urllib.request import urlretrieve
 from sublime_lib import ActivityIndicator
 
 from LSP.plugin.core.handlers import LanguageHandler
 from LSP.plugin.core.settings import ClientConfig, read_client_config
 
+SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.12.0/org.eclipse.lemminx-0.12.0-uber.jar"
+SERVER_SHA256 = "09c0ef7c7802f958f9e8f0184641837d4410b6ca0c9adbebc29b96cca3e6cb2c"
+
 
 def is_java_installed() -> bool:
     return shutil.which("java") is not None
-
-
-def package_cache() -> str:
-    cache_path = os.path.join(sublime.cache_path(), __package__)
-    os.makedirs(cache_path, exist_ok=True)
-    return cache_path
 
 
 def merge_configs(target: dict, source: dict):
@@ -47,93 +44,14 @@ def merge_configs(target: dict, source: dict):
     return None
 
 
-class LspXMLServer(object):
+class LemminxPlugin(LanguageHandler):
     binary = None
-    checksum = None
     ready = False
-    url = None
-    version = None
     thread = None
-
-    @classmethod
-    def check_binary(cls) -> bool:
-        """Check sha256 hash of downloaded binary.
-
-        Make sure not to run malicious or corrupted code.
-        """
-        try:
-            with open(cls.binary, "rb") as stream:
-                checksum = hashlib.sha256(stream.read()).hexdigest()
-                return cls.checksum == checksum
-        except OSError:
-            pass
-        return False
-
-    @classmethod
-    def download(cls) -> None:
-        with ActivityIndicator(
-            target=sublime.active_window(),
-            label="Downloading XML language server binary",
-        ):
-            urllib.request.urlretrieve(url=cls.url, filename=cls.binary)
-            cls.ready = cls.check_binary()
-            if not cls.ready:
-                try:
-                    os.remove(cls.binary)
-                except OSError:
-                    pass
-
-        if not cls.ready:
-            sublime.error_message("Error downloading XML server binary!")
-
-        cls.thread = None
-
-    @classmethod
-    def setup(cls) -> None:
-        if cls.thread or cls.ready:
-            return
-
-        # read server source information
-        filename = "Packages/{}/server.json".format(__package__)
-        server_json = sublime.decode_value(sublime.load_resource(filename))
-
-        cls.version = server_json["version"]
-        cls.url = sublime.expand_variables(server_json["url"], {"version": cls.version})
-        cls.checksum = server_json["sha256"].lower()
-
-        # built local server binary path
-        dest_path = package_cache()
-        cls.binary = os.path.join(dest_path, os.path.basename(cls.url))
-
-        # download server binary on demand
-        cls.ready = cls.check_binary()
-        if not cls.ready:
-            cls.thread = threading.Thread(target=cls.download)
-            cls.thread.start()
-
-        # clear old server binaries
-        for fn in os.listdir(dest_path):
-            fp = os.path.join(dest_path, fn)
-            try:
-                if fn[-4:].lower() == ".jar" and not os.path.samefile(fp, cls.binary):
-                    os.remove(fp)
-            except OSError:
-                pass
-
-    @classmethod
-    def cleanup(cls) -> None:
-        cls.binary = None
-        cls.checksum = None
-        cls.ready = False
-        cls.url = None
-        cls.version = None
-
-
-class LspXMLPlugin(LanguageHandler):
 
     def __init__(self):
         super().__init__()
-        LspXMLServer.setup()
+        self.setup()
 
     @property
     def name(self) -> str:
@@ -142,21 +60,24 @@ class LspXMLPlugin(LanguageHandler):
     @property
     def config(self) -> ClientConfig:
         settings_file = "LSP-lemminx.sublime-settings"
-        
+
         client_config = {
             "enabled": True,
-            "command": ["java", "-jar", LspXMLServer.binary],
+            "command": ["java", "-jar", self.binary],
         }
 
         default_config = sublime.decode_value(
-            sublime.load_resource(
-                "Packages/{}/{}".format(__package__, settings_file)
-            )
+            sublime.load_resource("Packages/{}/{}".format(__package__, settings_file))
         )
 
         user_config = sublime.load_settings(settings_file)
         for key, value in merge_configs(default_config, user_config):
             client_config[key] = value
+
+        # setup scheme cache directory
+        client_config.setdefault("settings", {}).setdefault("xml", {}).setdefault(
+            "server", {}
+        )["workDir"] = os.path.dirname(self.binary)
 
         return read_client_config(self.name, client_config)
 
@@ -166,15 +87,78 @@ class LspXMLPlugin(LanguageHandler):
                 "Please install Java Runtime for the XML language server to work."
             )
             return False
-        if not LspXMLServer.ready:
+        if not self.ready:
             sublime.status_message("Language server binary not yet downloaded.")
             return False
         return True
 
+    @classmethod
+    def setup(cls) -> None:
+        if cls.thread or cls.ready:
+            return
+
+        # built local server binary path
+        cls.binary = os.path.join(
+            sublime.cache_path(), __package__, os.path.basename(SERVER_URL)
+        )
+
+        # download server binary on demand
+        cls.ready = not cls._needs_update_or_installation()
+        if not cls.ready:
+            cls.thread = threading.Thread(target=cls._install_or_update)
+            cls.thread.start()
+
+    @classmethod
+    def _needs_update_or_installation(cls) -> bool:
+        """Check sha256 hash of downloaded binary.
+
+        Make sure not to run malicious or corrupted code.
+        """
+        try:
+            with open(cls.binary, "rb") as stream:
+                checksum = hashlib.sha256(stream.read()).hexdigest()
+                return checksum.lower() != SERVER_SHA256.lower()
+        except OSError:
+            pass
+        return True
+
+    @classmethod
+    def _install_or_update(cls) -> None:
+        try:
+            with ActivityIndicator(
+                target=sublime.active_window(),
+                label="Downloading XML language server binary",
+            ):
+                dest_path = os.path.dirname(cls.binary)
+                os.makedirs(dest_path, exist_ok=True)
+                urlretrieve(url=SERVER_URL, filename=cls.binary)
+                cls.ready = not cls._needs_update_or_installation()
+                if not cls.ready:
+                    try:
+                        os.remove(cls.binary)
+                    except FileNotFoundError:
+                        pass
+                    raise Exception("CRC error!")
+                else:
+                    # clear old server binaries
+                    for file_name in os.listdir(dest_path):
+                        if os.path.splitext(file_name)[1].lower() != ".jar":
+                            continue
+
+                        try:
+                            file_path = os.path.join(dest_path, file_name)
+                            if not os.path.samefile(file_path, cls.binary):
+                                os.remove(file_path)
+                        except FileNotFoundError:
+                            pass
+
+        except Exception as error:
+            sublime.error_message(
+                "Error downloading XML server binary!\n\n" + str(error)
+            )
+
+        cls.thread = None
+
 
 def plugin_loaded() -> None:
-    LspXMLServer.setup()
-
-
-def plugin_unloaded() -> None:
-    LspXMLServer.cleanup()
+    LemminxPlugin.setup()

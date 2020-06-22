@@ -35,9 +35,6 @@
                     "systemId": "https://www.apple.com/DTDs/PropertyList-1.0.dtd"
                 }
 			],
-			"server": {
-				"workDir": "~/.lemminx"
-			},
 
 			"completion": {
 				"autoCloseTags": true
