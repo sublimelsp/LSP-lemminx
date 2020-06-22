@@ -55,7 +55,7 @@ class LemminxPlugin(AbstractPlugin):
     def install_or_update(cls):
         # clear old server binaries
         for file_name in os.listdir(cls.server_dir):
-            if file_name.splitext()[1].lower() != ".jar":
+            if os.path.splitext(file_name)[1].lower() != ".jar":
                 continue
 
             try:
