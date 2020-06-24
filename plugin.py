@@ -53,6 +53,12 @@ class LemminxPlugin(AbstractPlugin):
 
     @classmethod
     def install_or_update(cls):
+        # download new server binary
+        urlretrieve(url=SERVER_URL, filename=cls.server_jar)
+        if cls.needs_update_or_installation():
+            os.remove(cls.server_jar)
+            raise RuntimeError("Error downloading XML server binary!")
+
         # clear old server binaries
         for file_name in os.listdir(cls.server_dir):
             if os.path.splitext(file_name)[1].lower() != ".jar":
@@ -64,12 +70,6 @@ class LemminxPlugin(AbstractPlugin):
                     os.remove(file_path)
             except FileNotFoundError:
                 pass
-
-        # download new server binary
-        urlretrieve(url=SERVER_URL, filename=cls.server_jar)
-        if cls.needs_update_or_installation():
-            os.remove(cls.server_jar)
-            raise RuntimeError("Error downloading XML server binary!")
 
 
 def plugin_loaded():
