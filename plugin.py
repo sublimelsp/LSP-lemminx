@@ -54,6 +54,7 @@ class LemminxPlugin(AbstractPlugin):
     @classmethod
     def install_or_update(cls):
         # download new server binary
+        os.makedirs(cls.server_dir, exist_ok=True)
         urlretrieve(url=SERVER_URL, filename=cls.server_jar)
         if cls.needs_update_or_installation():
             os.remove(cls.server_jar)
