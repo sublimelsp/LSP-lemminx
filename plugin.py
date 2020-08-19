@@ -5,8 +5,6 @@ import sublime
 from urllib.request import urlretrieve
 
 from LSP.plugin import AbstractPlugin
-from LSP.plugin import register_plugin
-from LSP.plugin import unregister_plugin
 
 
 SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.13.1/org.eclipse.lemminx-0.13.1-uber.jar"
@@ -71,11 +69,3 @@ class LemminxPlugin(AbstractPlugin):
                     os.remove(file_path)
             except FileNotFoundError:
                 pass
-
-
-def plugin_loaded():
-    register_plugin(LemminxPlugin)
-
-
-def plugin_unloaded():
-    unregister_plugin(LemminxPlugin)
