@@ -6,6 +6,12 @@
 		}
 	],
 	"settings": {
+		"xml.java.home": null,
+		"xml.server.vmargs": "-Xmx32M -XX:+UseG1GC -XX:+UseStringDeduplication",
+		"xml.logs.client": true,
+		"xml.trace.server": "off",
+
+		"xml.catalogs": [],
 		"xml.fileAssociations": [
 			{
 				"pattern": "**/*.hidden-theme",
@@ -23,6 +29,30 @@
 				"pattern": "**/*.tmTheme",
 				"systemId": "https://www.apple.com/DTDs/PropertyList-1.0.dtd"
 			}
-		]
+		],
+
+		"xml.codeLens.enabled": false,
+		"xml.completion.autoCloseTags": false,
+		"xml.format.emptyElements": "ignore",
+		"xml.format.enabled": true,
+		"xml.format.enforceQuoteStyle": "ignore",
+		"xml.format.joinCDATALines": false,
+		"xml.format.joinCommentLines": false,
+		"xml.format.joinContentLines": false,
+		"xml.format.preserveAttributeLineBreaks": false,
+		"xml.format.preservedNewlines": 2,
+		"xml.format.preserveEmptyContent": false,
+		"xml.format.spaceBeforeEmptyCloseTag": true,
+		"xml.format.splitAttributes": false,
+		"xml.preferences.quoteStyle": "double",
+		"xml.preferences.showSchemaDocumentationType": "all",
+		"xml.symbols.enabled": true,
+		"xml.symbols.excluded": [],
+		"xml.symbols.maxItemsComputed": 5000,
+		"xml.validation.disallowDocTypeDecl": false,
+		"xml.validation.enabled": true,
+		"xml.validation.noGrammar": "hint",
+		"xml.validation.resolveExternalEntities": false,
+		"xml.validation.schema": true,
 	}
 }
