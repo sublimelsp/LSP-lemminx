@@ -21,8 +21,7 @@
 												"verbose"
 											],
 											"default": "off",
-											"description": "Traces the communication between VS Code and the XML language server.",
-											"scope": "window"
+											"description": "Traces the communication between VS Code and the XML language server."
 										},
 										"xml.catalogs": {
 											"type": "array",
@@ -30,8 +29,7 @@
 											"items": {
 												"type": "string"
 											},
-											"description": "Array of XML Catalogs.",
-											"scope": "window"
+											"description": "Array of XML Catalogs."
 										},
 										"xml.logs.client": {
 											"type": "boolean",
@@ -46,50 +44,42 @@
 												"expand"
 											],
 											"default": "ignore",
-											"description": "Expand/collapse empty elements.",
-											"scope": "window"
+											"description": "Expand/collapse empty elements."
 										},
 										"xml.format.preserveAttributeLineBreaks": {
 											"type": "boolean",
 											"default": false,
-											"markdownDescription": "Preserve line breaks that appear before and after attributes. This setting is overridden if `#xml.format.splitAttributes#` is set to `true`.",
-											"scope": "window"
+											"markdownDescription": "Preserve line breaks that appear before and after attributes. This setting is overridden if `#xml.format.splitAttributes#` is set to `true`."
 										},
 										"xml.format.splitAttributes": {
 											"type": "boolean",
 											"default": false,
-											"description": "Split multiple attributes each onto a new line.",
-											"scope": "window"
+											"description": "Split multiple attributes each onto a new line."
 										},
 										"xml.format.joinCDATALines": {
 											"type": "boolean",
 											"default": false,
-											"description": "Join lines in a CDATA tag's content.",
-											"scope": "window"
+											"description": "Join lines in a CDATA tag's content."
 										},
 										"xml.format.joinCommentLines": {
 											"type": "boolean",
 											"default": false,
-											"description": "Join comment content on format.",
-											"scope": "window"
+											"description": "Join comment content on format."
 										},
 										"xml.format.spaceBeforeEmptyCloseTag": {
 											"type": "boolean",
 											"default": true,
-											"description": "Insert space before end of self closing tag. \nExample:\n  <tag/> -> <tag />",
-											"scope": "window"
+											"description": "Insert space before end of self closing tag. \nExample:\n  <tag/> -> <tag />"
 										},
 										"xml.format.joinContentLines": {
 											"type": "boolean",
 											"default": false,
-											"description": "Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed.",
-											"scope": "window"
+											"description": "Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed."
 										},
 										"xml.format.preserveEmptyContent": {
 											"type": "boolean",
 											"default": false,
-											"description": "Preserve empty content/whitespace in a tag.",
-											"scope": "window"
+											"description": "Preserve empty content/whitespace in a tag."
 										},
 										"xml.format.preservedNewlines": {
 											"type": "integer",
@@ -100,14 +90,12 @@
 												3
 											],
 											"default": 2,
-											"description": "Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines.",
-											"scope": "window"
+											"description": "Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines."
 										},
 										"xml.format.enabled": {
 											"type": "boolean",
 											"default": true,
-											"description": "Enable/disable ability to format document.",
-											"scope": "window"
+											"description": "Enable/disable ability to format document."
 										},
 										"xml.format.enforceQuoteStyle": {
 											"type": "string",
@@ -120,8 +108,7 @@
 												"Ignore quote style formatting."
 											],
 											"default": "ignore",
-											"markdownDescription": "Enforce `preferred` quote style (set by `#xml.preferences.quoteStyle#`) or `ignore` quote style when formatting. Default is `ignore`",
-											"scope": "window"
+											"markdownDescription": "Enforce `preferred` quote style (set by `#xml.preferences.quoteStyle#`) or `ignore` quote style when formatting. Default is `ignore`"
 										},
 										"xml.preferences.quoteStyle": {
 											"type": "string",
@@ -130,8 +117,7 @@
 												"double"
 											],
 											"default": "double",
-											"markdownDescription": "Preferred quote style to use for completion: `single` quotes, `double` quotes.",
-											"scope": "window"
+											"markdownDescription": "Preferred quote style to use for completion: `single` quotes, `double` quotes."
 										},
 										"xml.fileAssociations": {
 											"type": "array",
@@ -155,14 +141,12 @@
 												]
 											},
 											"description": "Allows XML schemas to be associated to file name patterns.\n\nExample:\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\",\n  \"pattern\": \"**/*.xsd\"\n}]",
-											"markdownDescription": "Allows XML schemas to be associated to file name patterns.\n\nExample:\n```json\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\",\n  \"pattern\": \"**/*.xsd\"\n}]\n```",
-											"scope": "window"
+											"markdownDescription": "Allows XML schemas to be associated to file name patterns.\n\nExample:\n```json\n[{\n  \"systemId\": \"path/to/file.xsd\",\n  \"pattern\": \"file1.xml\"\n},\n{\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\",\n  \"pattern\": \"**/*.xsd\"\n}]\n```"
 										},
 										"xml.completion.autoCloseTags": {
 											"type": "boolean",
 											"default": true,
-											"description": "Enable/disable autoclosing of XML tags. \n\nIMPORTANT: Turn off editor.autoClosingTags for this to work.",
-											"scope": "window"
+											"description": "Enable/disable autoclosing of XML tags. \n\nIMPORTANT: Turn off editor.autoClosingTags for this to work."
 										},
 										"xml.codeLens.enabled": {
 											"type": "boolean",
@@ -184,8 +168,7 @@
 												"Documentation comes from the `xs:documentation` and `xs:appinfo` elements.",
 												"Displays no documentation."
 											],
-											"description": "Specifies the source of the XML schema documentation displayed on hover and completion.",
-											"scope": "window"
+											"description": "Specifies the source of the XML schema documentation displayed on hover and completion."
 										},
 										"xml.java.home": {
 											"type": [
@@ -193,8 +176,7 @@
 												"null"
 											],
 											"default": null,
-											"description": "Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server.\nOn Windows, backslashes must be escaped, i.e.\n\"xml.java.home\": \"C:\\\\Program Files\\\\Java\\\\jdk1.8.0_161\"",
-											"scope": "window"
+											"description": "Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server.\nOn Windows, backslashes must be escaped, i.e.\n\"xml.java.home\": \"C:\\\\Program Files\\\\Java\\\\jdk1.8.0_161\""
 										},
 										"xml.server.vmargs": {
 											"type": [
@@ -202,14 +184,12 @@
 												"null"
 											],
 											"default": "-Xmx64M -XX:+UseG1GC -XX:+UseStringDeduplication",
-											"description": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector.",
-											"scope": "window"
+											"description": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector."
 										},
 										"xml.server.workDir": {
 											"type": "string",
 											"default": "~/.lemminx",
-											"description": "Set a custom folder path for cached XML Schemas. An absolute path is expected, although the ~ prefix (for the user home directory) is supported.",
-											"scope": "window"
+											"description": "Set a custom folder path for cached XML Schemas. An absolute path is expected, although the ~ prefix (for the user home directory) is supported."
 										},
 										"xml.validation.noGrammar": {
 											"type": "string",
@@ -221,38 +201,32 @@
 												"error"
 											],
 											"default": "hint",
-											"description": "The message severity when a document has no associated grammar.",
-											"scope": "window"
+											"description": "The message severity when a document has no associated grammar."
 										},
 										"xml.validation.enabled": {
 											"type": "boolean",
 											"default": true,
-											"description": "Enable/disable all validation.",
-											"scope": "window"
+											"description": "Enable/disable all validation."
 										},
 										"xml.validation.schema": {
 											"type": "boolean",
 											"default": true,
-											"description": "Enable/disable schema based validation. Ignored if \"xml.validation.enabled\": false.",
-											"scope": "window"
+											"description": "Enable/disable schema based validation. Ignored if \"xml.validation.enabled\": false."
 										},
 										"xml.validation.disallowDocTypeDecl": {
 											"type": "boolean",
 											"default": false,
-											"description": "Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration.",
-											"scope": "window"
+											"description": "Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration."
 										},
 										"xml.validation.resolveExternalEntities": {
 											"type": "boolean",
 											"default": false,
-											"description": "Enable/disable resolve of external entities.",
-											"scope": "window"
+											"description": "Enable/disable resolve of external entities."
 										},
 										"xml.symbols.enabled": {
 											"type": "boolean",
 											"default": true,
-											"description": "Enable/disable document symbols (Outline). No symbols are given if `\"xml.symbol.enabled\": false`.",
-											"scope": "window"
+											"description": "Enable/disable document symbols (Outline). No symbols are given if `\"xml.symbol.enabled\": false`."
 										},
 										"xml.symbols.excluded": {
 											"type": "array",
@@ -260,8 +234,7 @@
 											"items": {
 												"type": "string"
 											},
-											"description": "Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.\n\nExample:\n[\n \"**/*LargeFile.xml\"\n]",
-											"scope": "window"
+											"description": "Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.\n\nExample:\n[\n \"**/*LargeFile.xml\"\n]"
 										},
 										"xml.symbols.maxItemsComputed": {
 											"type": "integer",
@@ -280,7 +253,7 @@
 						{
 							"$ref": "sublime://settings/LSP-lemminx#/definitions/PluginConfig"
 						}
-					],
+					]
 				}
 			},
 			{
@@ -318,7 +291,7 @@
 						}
 					}
 				}
-			},
+			}
 		]
 	}
 }
