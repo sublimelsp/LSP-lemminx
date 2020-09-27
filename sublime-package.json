@@ -10,6 +10,14 @@
 					"definitions": {
 						"PluginConfig": {
 							"properties": {
+								"initializationOptions": {
+									"type": "object",
+									"properties": {
+										"settings": {
+											"$ref": "sublime://settings/LSP-lemminx#/definitions/PluginConfig/properties/settings"
+										}
+									}
+								},
 								"settings": {
 									"type": "object",
 									"properties": {
@@ -35,6 +43,11 @@
 											"type": "boolean",
 											"default": true,
 											"description": "Should the server log to client output."
+										},
+										"xml.logs.file": {
+											"type": "string",
+											"default": "",
+											"description": "File path to write the server log output to."
 										},
 										"xml.format.emptyElements": {
 											"type": "string",
