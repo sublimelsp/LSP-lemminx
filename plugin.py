@@ -1,5 +1,6 @@
 import os
 import hashlib
+import shutil
 import sublime
 
 from urllib.request import urlretrieve
@@ -28,7 +29,7 @@ class LemminxPlugin(AbstractPlugin):
         settings = sublime.load_settings(base_name)
 
         # prepare server command
-        cls.server_dir = os.path.join(sublime.cache_path(), __package__)
+        cls.server_dir = os.path.join(cls.storage_path(), __package__)
         cls.server_jar = os.path.join(cls.server_dir, SERVER_URL.rsplit("/", 1)[1])
         settings.set("command", ["java", "-jar", cls.server_jar])
 
@@ -42,6 +43,11 @@ class LemminxPlugin(AbstractPlugin):
     @classmethod
     def needs_update_or_installation(cls):
         try:
+            # move from cache path to package storage
+            old_server_dir = os.path.join(sublime.cache_path(), __package__)
+            if os.path.isdir(old_server_dir):
+                shutil.move(old_server_dir, cls.server_dir)
+            # check hash
             with open(cls.server_jar, "rb") as stream:
                 checksum = hashlib.sha256(stream.read()).hexdigest()
                 return checksum.lower() != SERVER_SHA256.lower()
