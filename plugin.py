@@ -8,8 +8,8 @@ from urllib.request import urlretrieve
 from LSP.plugin import AbstractPlugin
 
 
-SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.13.1/org.eclipse.lemminx-0.13.1-uber.jar"
-SERVER_SHA256 = "a4d6ed486abc9be8ecb8522adc31b495c570ab34ff36c57484e0d9161687a6e2"
+SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.14.1/org.eclipse.lemminx-0.14.1-uber.jar"
+SERVER_SHA256 = "fb38a67211b53c86ee96892a600760b3085e942ceb1c6249e8edc52993304a03"
 
 
 class LemminxPlugin(AbstractPlugin):
