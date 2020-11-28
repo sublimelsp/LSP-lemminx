@@ -188,22 +188,6 @@
 									],
 									"description": "Specifies the source of the XML schema documentation displayed on hover and completion."
 								},
-								"xml.java.home": {
-									"type": [
-										"string",
-										"null"
-									],
-									"default": null,
-									"description": "Specifies the folder path to the JDK (8 or more recent) used to launch the XML Language Server.\nOn Windows, backslashes must be escaped, i.e.\n\"xml.java.home\": \"C:\\\\Program Files\\\\Java\\\\jdk1.8.0_161\""
-								},
-								"xml.server.vmargs": {
-									"type": [
-										"string",
-										"null"
-									],
-									"default": "-Xmx64M -XX:+UseG1GC -XX:+UseStringDeduplication",
-									"description": "Specifies extra VM arguments used to launch the XML Language Server. Eg. use `-Xmx1G  -XX:+UseG1GC -XX:+UseStringDeduplication` to bypass class verification, increase the heap size to 1GB and enable String deduplication with the G1 Garbage collector."
-								},
 								"xml.server.workDir": {
 									"type": "string",
 									"default": "~/.lemminx",

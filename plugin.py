@@ -63,7 +63,14 @@ class LemminxPlugin(LanguageHandler):
 
         client_config = {
             "enabled": True,
-            "command": ["java", "-jar", self.binary],
+            "command": [
+                "java", 
+                "-Xmx64M",
+                "-XX:+UseG1GC",
+                "-XX:+UseStringDeduplication",
+                "-DwatchParentProcess=false",
+                "-jar", self.binary
+            ]
         }
 
         default_config = sublime.decode_value(
