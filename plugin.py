@@ -7,8 +7,7 @@ import threading
 from urllib.request import urlretrieve
 from sublime_lib import ActivityIndicator
 
-from LSP.plugin.core.handlers import LanguageHandler
-from LSP.plugin.core.settings import ClientConfig, read_client_config
+from LSP.plugin import ClientConfig, LanguageHandler, read_client_config
 
 SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.14.1/org.eclipse.lemminx-0.14.1-uber.jar"
 SERVER_SHA256 = "fb38a67211b53c86ee96892a600760b3085e942ceb1c6249e8edc52993304a03"
@@ -106,8 +105,18 @@ class LemminxPlugin(LanguageHandler):
 
         # built local server binary path
         cls.binary = os.path.join(
-            sublime.cache_path(), __package__, os.path.basename(SERVER_URL)
+            cls.storage_path(), __package__, os.path.basename(SERVER_URL)
         )
+
+        # move from cache path to package storage
+        try:
+            old_server_dir = os.path.join(sublime.cache_path(), __package__)
+            if os.path.isdir(old_server_dir):
+                dest_path = os.path.dirname(cls.binary)
+                os.makedirs(dest_path, exist_ok=True)
+                shutil.move(old_server_dir, cls.storage_path())
+        except OSError:
+            shutil.rmtree(old_server_dir, ignore_errors=True)
 
         # download server binary on demand
         cls.ready = not cls._needs_update_or_installation()
