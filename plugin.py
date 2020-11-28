@@ -38,13 +38,18 @@ class LemminxPlugin(AbstractPlugin):
             # move from cache path to package storage
             old_server_dir = os.path.join(sublime.cache_path(), __package__)
             if os.path.isdir(old_server_dir):
-                shutil.move(old_server_dir, cls.server_dir())
+                shutil.move(old_server_dir, cls.storage_path())
+        except OSError:
+            shutil.rmtree(old_server_dir, ignore_errors=True)
+
+        try:
             # check hash
             with open(cls.server_jar(), "rb") as stream:
                 checksum = hashlib.sha256(stream.read()).hexdigest()
                 return checksum.lower() != SERVER_SHA256.lower()
         except OSError:
             pass
+
         return True
 
     @classmethod
