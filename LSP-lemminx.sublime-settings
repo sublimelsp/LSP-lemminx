@@ -1,8 +1,17 @@
 {
 	"languages": [
 		{
+			// ST4
 			"languageId": "xml",
-			"document_selector": "text.xml"
+			"document_selector": "text.xml",
+			// ST3
+			"scopes": ["text.xml"],
+			"syntaxes": [
+				"Packages/PackageDev/Package/Property List/Property List.sublime-syntax",
+				"Packages/PackageDev/Package/Sublime Text Snippet/Sublime Text Snippet.sublime-syntax",
+				"Packages/PackageDev/Package/TextMate Preferences/TextMate Preferences.sublime-syntax",
+				"Packages/XML/XML.sublime-syntax",
+			],
 		}
 	],
 	"settings": {
