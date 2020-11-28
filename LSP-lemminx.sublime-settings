@@ -1,10 +1,10 @@
 {
+	// ST4
+	"selector": "text.xml",
+	// ST3
 	"languages": [
 		{
-			// ST4
 			"languageId": "xml",
-			"document_selector": "text.xml",
-			// ST3
 			"scopes": ["text.xml"],
 			"syntaxes": [
 				"Packages/PackageDev/Package/Property List/Property List.sublime-syntax",
