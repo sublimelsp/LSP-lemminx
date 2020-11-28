@@ -23,7 +23,7 @@ def plugin_unloaded():
 class LemminxPlugin(AbstractPlugin):
     @classmethod
     def name(cls):
-        return "lemminx"
+        return "LemMinX"
 
     @classmethod
     def configuration(cls):
