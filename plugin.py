@@ -73,7 +73,14 @@ class LemminxPlugin(AbstractPlugin):
 
     @classmethod
     def on_pre_start(cls, window, initiating_view, workspace_folders, configuration):
-        configuration.command = ["java", "-jar", cls.server_jar()]
+        configuration.command = [
+            "java",
+            "-Xmx64M",
+            "-XX:+UseG1GC",
+            "-XX:+UseStringDeduplication",
+            "-DwatchParentProcess=false",
+            "-jar", cls.server_jar()
+        ]
 
     @classmethod
     def on_settings_changed(cls, dotted):
