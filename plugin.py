@@ -5,40 +5,32 @@ import sublime
 
 from urllib.request import urlretrieve
 
-from LSP.plugin import AbstractPlugin
+from LSP.plugin import AbstractPlugin, register_plugin, unregister_plugin
 
 
 SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.14.1/org.eclipse.lemminx-0.14.1-uber.jar"
 SERVER_SHA256 = "fb38a67211b53c86ee96892a600760b3085e942ceb1c6249e8edc52993304a03"
 
 
+def plugin_loaded():
+    register_plugin(LemminxPlugin)
+
+
+def plugin_unloaded():
+    unregister_plugin(LemminxPlugin)
+
+
 class LemminxPlugin(AbstractPlugin):
-
-    server_dir = ""
-    server_jar = ""
-
     @classmethod
     def name(cls):
         return "lemminx"
 
     @classmethod
     def configuration(cls):
-        name = "LSP-" + cls.name()
-        base_name = name + ".sublime-settings"
-        file_path = "Packages/{}/{}".format(__package__, base_name)
-        settings = sublime.load_settings(base_name)
-
-        # prepare server command
-        cls.server_dir = os.path.join(cls.storage_path(), __package__)
-        cls.server_jar = os.path.join(cls.server_dir, SERVER_URL.rsplit("/", 1)[1])
-        settings.set("command", ["java", "-jar", cls.server_jar])
-
-        # setup scheme cache directory
-        client_settings = settings.get("settings")
-        client_settings["xml.server.workDir"] = cls.server_dir
-        settings.set("settings", client_settings)
-
-        return settings, file_path
+        return (
+            sublime.load_settings("LSP-lemminx.sublime-settings"),
+            "Packages/" + __package__ + "/LSP-lemminx.sublime-settings"
+        )
 
     @classmethod
     def needs_update_or_installation(cls):
@@ -46,9 +38,9 @@ class LemminxPlugin(AbstractPlugin):
             # move from cache path to package storage
             old_server_dir = os.path.join(sublime.cache_path(), __package__)
             if os.path.isdir(old_server_dir):
-                shutil.move(old_server_dir, cls.server_dir)
+                shutil.move(old_server_dir, cls.server_dir())
             # check hash
-            with open(cls.server_jar, "rb") as stream:
+            with open(cls.server_jar(), "rb") as stream:
                 checksum = hashlib.sha256(stream.read()).hexdigest()
                 return checksum.lower() != SERVER_SHA256.lower()
         except OSError:
@@ -57,21 +49,42 @@ class LemminxPlugin(AbstractPlugin):
 
     @classmethod
     def install_or_update(cls):
+        server_dir = cls.server_dir()
+        server_jar = cls.server_jar()
+
         # download new server binary
-        os.makedirs(cls.server_dir, exist_ok=True)
-        urlretrieve(url=SERVER_URL, filename=cls.server_jar)
+        os.makedirs(server_dir, exist_ok=True)
+        urlretrieve(url=SERVER_URL, filename=server_jar)
         if cls.needs_update_or_installation():
-            os.remove(cls.server_jar)
+            os.remove(server_jar)
             raise RuntimeError("Error downloading XML server binary!")
 
         # clear old server binaries
-        for file_name in os.listdir(cls.server_dir):
+        for file_name in os.listdir(server_dir):
             if os.path.splitext(file_name)[1].lower() != ".jar":
                 continue
 
             try:
-                file_path = os.path.join(cls.server_dir, file_name)
-                if not os.path.samefile(file_path, cls.server_jar):
+                file_path = os.path.join(server_dir, file_name)
+                if not os.path.samefile(file_path, server_jar):
                     os.remove(file_path)
             except FileNotFoundError:
                 pass
+
+    @classmethod
+    def on_pre_start(cls, window, initiating_view, workspace_folders, configuration):
+        configuration.command = ["java", "-jar", cls.server_jar()]
+
+    @classmethod
+    def on_settings_changed(cls, dotted):
+        dotted.set("xml.server.workDir", cls.server_dir())
+
+    # internal methods
+
+    @classmethod
+    def server_dir(cls):
+        return os.path.join(cls.storage_path(), __package__)
+
+    @classmethod
+    def server_jar(cls):
+        return os.path.join(cls.server_dir(), SERVER_URL.rsplit("/", 1)[1])
