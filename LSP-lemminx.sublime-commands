@@ -6,5 +6,20 @@
 			"base_file": "${packages}/LSP-lemminx/LSP-lemminx.sublime-settings",
 			"default": "// Settings in here override those in \"LSP-lemminx/LSP-lemminx.sublime-settings\"\n\n{\n\t$0\n}\n"
 		}
+	},
+	{
+		"caption": "XML: Validate All Files",
+		"command": "lsp_execute",
+		"args": {
+			"command_name": "xml.validation.all.files",
+		}
+	},
+	{
+		"caption": "XML: Validate File",
+		"command": "lsp_execute",
+		"args": {
+			"command_name": "xml.validation.current.file",
+			"command_args": ["${document_id}"]
+		}
 	}
 ]
