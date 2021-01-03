@@ -1,6 +1,5 @@
 import os
 import hashlib
-import shutil
 import sublime
 
 from urllib.request import urlretrieve
@@ -34,14 +33,6 @@ class LemminxPlugin(AbstractPlugin):
 
     @classmethod
     def needs_update_or_installation(cls):
-        try:
-            # move from cache path to package storage
-            old_server_dir = os.path.join(sublime.cache_path(), __package__)
-            if os.path.isdir(old_server_dir):
-                shutil.move(old_server_dir, cls.storage_path())
-        except OSError:
-            shutil.rmtree(old_server_dir, ignore_errors=True)
-
         try:
             # check hash
             with open(cls.server_jar(), "rb") as stream:
