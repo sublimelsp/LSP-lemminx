@@ -66,7 +66,9 @@
 			"validation": {
 				"enabled": true,
 				"noGrammar": "hint",
-				"schema": true,
+				"schema": {
+					"enabled": "always"
+				},
 				"disallowDocTypeDecl": false,
 				"resolveExternalEntities": false
 			},

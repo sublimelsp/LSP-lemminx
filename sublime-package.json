@@ -210,10 +210,20 @@
 									"default": true,
 									"description": "Enable/disable all validation."
 								},
-								"xml.validation.schema": {
-									"type": "boolean",
-									"default": true,
-									"description": "Enable/disable schema based validation. Ignored if \"xml.validation.enabled\": false."
+								"xml.validation.schema.enabled": {
+									"type": "string",
+									"enum": [
+										"always",
+										"never",
+										"onValidSchema"
+									],
+									"default": "always",
+									"description": "Enable/disable schema based validation. Ignored if \"xml.validation.enabled\": false.",
+									"markdownEnumDescriptions": [
+										"Enable schema validation and output error uppon invalid schema files.",
+										"Disable schema validation",
+										"Enable schema validation only if valid schema file is present.",
+									]
 								},
 								"xml.validation.disallowDocTypeDecl": {
 									"type": "boolean",
