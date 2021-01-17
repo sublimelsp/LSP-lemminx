@@ -50,6 +50,6 @@
 		"xml.validation.enabled": true,
 		"xml.validation.noGrammar": "hint",
 		"xml.validation.resolveExternalEntities": false,
-		"xml.validation.schema": true,
+		"xml.validation.schema.enabled": "always",
 	}
 }
