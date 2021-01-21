@@ -6,11 +6,15 @@
 	"languages": [
 		{
 			"languageId": "xml",
-			"scopes": ["text.xml"],
+			"scopes": [
+				"text.plist",
+				"text.xml"
+			],
 			"syntaxes": [
 				"Packages/PackageDev/Package/Property List/Property List.sublime-syntax",
 				"Packages/PackageDev/Package/Sublime Text Snippet/Sublime Text Snippet.sublime-syntax",
 				"Packages/PackageDev/Package/TextMate Preferences/TextMate Preferences.sublime-syntax",
+				"Packages/plist/plist.tmLanguage",
 				"Packages/XML/XML.sublime-syntax",
 			],
 		}
