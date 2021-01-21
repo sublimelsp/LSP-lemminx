@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="snippet">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="content" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>
+							<![CDATA[
+							<br>The snippet content which is added to the buffer.
+							<br>
+							<br>```XML
+							<br>&lt;content&gt;&lt;![CDATA[if (${1:condition}) {
+							<br>&nbsp;&nbsp;$0
+							<br>}
+							<br>]]&gt;&lt;/content&gt;
+							<br>```
+							<br>
+							<br>Note: You might want to wrap content in `&lt;![CDATA[]]&gt` to avoid XML escaping special characters and maintain whitespace and line breaks.
+							]]>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<xs:element name="tabTrigger" type="xs:string" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>
+							The appreviation which is expanded by the snippet.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<xs:element name="scope" type="xs:string" minOccurs="1" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>
+							<![CDATA[
+							<br>The selector to restrict the scope in which the snippet is suggested by ST's auto completion engine.
+							<br>
+							<br>```XML
+							<br>&lt;selector&gt;source.c&lt;/selector&gt;
+							<br>```
+							]]>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+
+				<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>
+							<![CDATA[
+							<br>A brief description to describe what the snippet does.
+							<br>
+							<br>Note: It is displayed as annotation in auto completion panels.
+							]]>
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

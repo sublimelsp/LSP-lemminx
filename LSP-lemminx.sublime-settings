@@ -9,25 +9,7 @@
 		"xml.trace.server": "off",
 
 		"xml.catalogs": [],
-		"xml.fileAssociations": [
-			{
-				"pattern": "**/*.hidden-theme",
-				"systemId": "https://www.apple.com/DTDs/PropertyList-1.0.dtd"
-			},
-			{
-				"pattern": "**/*.sublime-snippet",
-				"systemId": "https://www.apple.com/DTDs/PropertyList-1.0.dtd"
-			},
-			{
-				"pattern": "**/*.tmPreferences",
-				"systemId": "https://www.apple.com/DTDs/PropertyList-1.0.dtd"
-			},
-			{
-				"pattern": "**/*.tmTheme",
-				"systemId": "https://www.apple.com/DTDs/PropertyList-1.0.dtd"
-			}
-		],
-
+		"xml.fileAssociations": [],
 		"xml.codeLens.enabled": false,
 		"xml.completion.autoCloseTags": false,
 		"xml.format.emptyElements": "ignore",

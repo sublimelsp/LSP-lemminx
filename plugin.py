@@ -12,6 +12,11 @@ SERVER_SHA256 = "fb38a67211b53c86ee96892a600760b3085e942ceb1c6249e8edc52993304a0
 
 
 def plugin_loaded():
+    try:
+        LemminxPlugin.install_schemas()
+    except OSError:
+        print("LSP-lemminx: Unable to install schemes!")
+
     register_plugin(LemminxPlugin)
 
 
@@ -20,6 +25,30 @@ def plugin_unloaded():
 
 
 class LemminxPlugin(AbstractPlugin):
+
+    file_associations = [
+        {
+            "pattern": "**/*.sublime-snippet",
+            "systemId": "$storage_path/cache/sublime/sublime-snippet.xsd"
+        },
+        {
+            "pattern": "**/*.tmPreferences",
+            "systemId": "$storage_path/cache/sublime/tmPreferences.xsd"
+        },
+        {
+            "pattern": "**/*.hidden-tmPreferences",
+            "systemId": "$storage_path/cache/sublime/tmPreferences.xsd"
+        },
+        {
+            "pattern": "**/*.tmTheme",
+            "systemId": "$storage_path/cache/sublime/tmTheme.xsd"
+        },
+        {
+            "pattern": "**/*.hidden-tmTheme",
+            "systemId": "$storage_path/cache/sublime/tmTheme.xsd"
+        }
+    ]
+
     @classmethod
     def name(cls):
         return "LemMinX"
@@ -80,9 +109,26 @@ class LemminxPlugin(AbstractPlugin):
 
     @classmethod
     def on_settings_changed(cls, dotted):
+        # prepend a list of fixed file associations
+        dotted.set(
+            "xml.fileAssociations",
+            cls.file_associations + dotted.get("xml.fileAssociations") or []
+        )
+        # adjust working dir to package storage directory
         dotted.set("xml.server.workDir", cls.server_dir())
 
+    @classmethod
+    def additional_variables(cls):
+        return {
+            "package_path": cls.package_dir(),
+            "storage_path": cls.server_dir()
+        }
+
     # internal methods
+
+    @classmethod
+    def package_dir(cls):
+        return os.path.join(sublime.packages_path(), __package__)
 
     @classmethod
     def server_dir(cls):
@@ -91,3 +137,26 @@ class LemminxPlugin(AbstractPlugin):
     @classmethod
     def server_jar(cls):
         return os.path.join(cls.server_dir(), SERVER_URL.rsplit("/", 1)[1])
+
+    @classmethod
+    def install_schemas(cls):
+        """
+        Extract scheme files from sublime-package file.
+
+        LemMinX can't read schemas or catalogs from zipped packages.
+        """
+        dest_path = os.path.join(cls.server_dir(), "cache", "sublime")
+        pkg_path = os.path.dirname(__file__)
+        if ".sublime-package" in pkg_path:
+            import zipfile
+            pkg = zipfile.ZipFile(file=pkg_path)
+            pkg.extractall(
+                path=dest_path,
+                members=(m for m in pkg.namelist() if m.startswith("schemas"))
+            )
+        else:
+            import shutil
+            os.makedirs(dest_path, exist_ok=True)
+            src_path = os.path.join(pkg_path, 'schemas')
+            for f in os.listdir(src_path):
+                shutil.copy(os.path.join(src_path, f), dest_path)

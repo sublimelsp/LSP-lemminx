@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="plist">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;plist version="1.0">
+				<br> &lt;dict>
+				<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
+				<br> &nbsp;&nbsp;&lt;string>Display Name&lt;/string>
+				<br> &nbsp;&nbsp;&lt;key>settings&lt;/key>
+				<br> &nbsp;&nbsp;&lt;array>
+				<br> &nbsp;&nbsp;&nbsp;&nbsp;&lt;dict>
+				<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...
+				<br> &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dict>
+				<br> &nbsp;&nbsp;&lt;/array>
+				<br> &lt;/dict>
+				<br> &lt;/plist>
+				<br> ```
+				<br>
+				<br> A color scheme is a Property List of certain structure. The topmost dictionary contains a `name` and a `settings` array.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="dict" type="MainDictType" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="version" type="xs:string" fixed="1.0"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="MainDictType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;plist version="1.0">
+				<br> &lt;dict>
+				<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
+				<br> &nbsp;&nbsp;&lt;string>Display Name&lt;/string>
+				<br> &nbsp;&nbsp;&lt;key>settings&lt;/key>
+				<br> &nbsp;&nbsp;&lt;array>
+				<br> &nbsp;&nbsp;&nbsp;&nbsp;&lt;dict>
+				<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...
+				<br> &nbsp;&nbsp;&nbsp;&nbsp;&lt;/dict>
+				<br> &nbsp;&nbsp;&lt;/array>
+				<br> &lt;/dict>
+				<br> &lt;/plist>
+				<br> ```
+				<br>
+				<br> A color scheme is a Property List of certain structure. The topmost dictionary contains a `name` and a `settings` array.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="2" maxOccurs="2">
+			<xs:element name="key" type="MainKeysType"/>
+			<xs:choice>
+				<xs:element name="array" type="MainSettingsArrayType"/>
+				<xs:element name="string" type="StringValueType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="MainKeysType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;key>...&lt;/key>
+				<br> ```
+				<br>
+				<br> The Property List key with the main tmTheme keys.
+				<br>
+				<br> Valid values are:
+				<br>
+				<br> - name
+				<br> - settings
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="name">
+				<xs:annotation>
+					<xs:documentation>
+					<![CDATA[
+						<br> ```xml
+						<br> &lt;key>name&lt;/key>
+						<br> &lt;string>My Color Scheme Name&lt;/string>
+						<br> ```
+						<br>
+						<br> Color Scheme's display name.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="settings">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>settings&lt;/key>
+						<br> &lt;array>
+						<br> &nbsp;&nbsp;&lt;dict>
+						<br> &nbsp;&nbsp;&nbsp;&nbsp;...
+						<br> &nbsp;&nbsp;&lt;/dict>
+						<br> &lt;/array>
+						<br> ```
+						<br>
+						<br> An `array` of settings to apply to tokens of certain scope.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="MainSettingsArrayType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;key>settings&lt;/key>
+				<br> &lt;array>
+				<br> &nbsp;&nbsp;&lt;dict>
+				<br> &nbsp;&nbsp;&nbsp;&nbsp;...
+				<br> &nbsp;&nbsp;&lt;/dict>
+				<br> &lt;/array>
+				<br> ```
+				<br>
+				<br> An `array` of settings to apply to tokens of certain scope.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="dict" type="TokenSettingsType"/>
+		</xs:sequence>
+	</xs:complexType>
+<!--
+	<xs:complexType name="GlobalSettingsType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;dict>
+				<br> &nbsp;&nbsp;&lt;key>settings&lt;/key>
+				<br> &nbsp;&nbsp;&lt;dict>
+				<br> &nbsp;&nbsp;&nbsp;&nbsp;...
+				<br> &nbsp;&nbsp;&lt;/dict>
+				<br> &lt;/dict>
+				<br> ```
+				<br>
+				<br> Container for rules to apply globally.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="key" type="GlobalSettingsKeysType"/>
+			<xs:element name="string" type="StringValueType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="GlobalSettingsKeysType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;key>...&lt;/key>
+				<br> ```
+				<br>
+				<br> The Property List key with settings keys.
+				<br>
+				<br> Valid values are:
+				<br>
+				<br> - foreground
+				<br> - background
+				<br> - caret
+				<br> - invisibles
+				<br> - lineHighlight
+				<br> - selection
+				<br> - selectionBorder
+				<br> - selectionForeground
+				<br> - findHighlightForeground
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="foreground">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>foreground&lt;/key>
+						<br> &lt;string>##444444&lt;/string>
+						<br> ```
+						<br>
+						<br> The color to apply to characters.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="background">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>background&lt;/key>
+						<br> &lt;string>#FFD42066&lt;/string>
+						<br> ```
+						<br>
+						<br> The color to apply to the background of a token.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="caret"> </xs:enumeration>
+			<xs:enumeration value="invisibles"> </xs:enumeration>
+			<xs:enumeration value="lineHighlight"> </xs:enumeration>
+			<xs:enumeration value="selection"> </xs:enumeration>
+			<xs:enumeration value="selectionBorder"> </xs:enumeration>
+			<xs:enumeration value="selectionForeground"> </xs:enumeration>
+			<xs:enumeration value="findHighlightForeground"> </xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+ -->
+	<xs:complexType name="TokenSettingsType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;dict>
+				<br> &nbsp;&nbsp;&lt;key>scope&lt;/key>
+				<br> &nbsp;&nbsp;&lt;string>source.c comment&lt;/string>
+				<br> &nbsp;&nbsp;&lt;key>settings&lt;/key>
+				<br> &nbsp;&nbsp;&lt;dict>
+				<br> &nbsp;&nbsp;&nbsp;&nbsp;...
+				<br> &nbsp;&nbsp;&lt;/dict>
+				<br> &lt;/dict>
+				<br> ```
+				<br>
+				<br> Container for rules to apply to tokens of certain scope.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="1" maxOccurs="3">
+			<xs:element name="key" type="TokenSettingsKeysType"/>
+			<xs:choice>
+				<xs:element name="dict" type="TokenStylesType"/>
+				<xs:element name="string" type="StringValueType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="TokenSettingsKeysType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;key>...&lt;/key>
+				<br> ```
+				<br>
+				<br> The Property List key with settings keys.
+				<br>
+				<br> Valid values are:
+				<br>
+				<br> - name
+				<br> - scope
+				<br> - settings
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="name">
+				<xs:annotation>
+					<xs:documentation>
+					<![CDATA[
+						<br> ```xml
+						<br> &lt;key>name&lt;/key>
+						<br> &lt;string>Rule Name&lt;/string>
+						<br> ```
+						<br>
+						<br> Name of the rule. (optional)
+						<br>
+						<br> Note: Ignored by Sublime Text.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="scope">
+				<xs:annotation>
+					<xs:documentation>
+					<![CDATA[
+						<br> ```xml
+						<br> &lt;key>scope&lt;/key>
+						<br> &lt;string>source.c keyword&lt;/string>
+						<br> ```
+						<br>
+						<br> Scope selector to determine in which context the metadata should be available.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="settings">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>settings&lt;/key>
+						<br> &lt;dict>
+						<br> &nbsp;&nbsp;...
+						<br> &lt;/dict>
+						<br> ```
+						<br>
+						<br> Container for styles to apply to tokens of a certain scope.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="TokenStylesType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;dict>
+				<br> &nbsp;&nbsp;&lt;key>scope&lt;/key>
+				<br> &nbsp;&nbsp;&lt;string>source.c comment&lt;/string>
+				<br> &nbsp;&nbsp;&lt;key>settings&lt;/key>
+				<br> &nbsp;&nbsp;&lt;dict>
+				<br> &nbsp;&nbsp;&nbsp;&nbsp;...
+				<br> &nbsp;&nbsp;&lt;/dict>
+				<br> &lt;/dict>
+				<br> ```
+				<br>
+				<br> Container for rules to apply to tokens of certain scope.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="key" type="TokenStyleKeysType"/>
+			<xs:element name="string" type="StringValueType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="TokenStyleKeysType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;key>...&lt;/key>
+				<br> ```
+				<br>
+				<br> The Property List key with settings keys.
+				<br>
+				<br> Valid values are:
+				<br>
+				<br> - foreground
+				<br> - background
+				<br> - fontStyle
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="foreground">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>foreground&lt;/key>
+						<br> &lt;string>##444444&lt;/string>
+						<br> ```
+						<br>
+						<br> The color to apply to characters.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="background">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>background&lt;/key>
+						<br> &lt;string>#FFD42066&lt;/string>
+						<br> ```
+						<br>
+						<br> The color to apply to the background of a token.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fontStyle">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>fontStyle&lt;/key>
+						<br> &lt;string>bold&lt;/string>
+						<br> ```
+						<br>
+						<br> The font style.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="caret"> </xs:enumeration>
+			<xs:enumeration value="invisibles"> </xs:enumeration>
+			<xs:enumeration value="lineHighlight"> </xs:enumeration>
+			<xs:enumeration value="selection"> </xs:enumeration>
+			<xs:enumeration value="selectionBorder"> </xs:enumeration>
+			<xs:enumeration value="selectionForeground"> </xs:enumeration>
+			<xs:enumeration value="findHighlightForeground"> </xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="StringValueType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;string>Insert content here&lt;/string>
+				<br> ```
+				<br>
+				<br> Unrestricted string or regular expression value.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+</xs:schema>

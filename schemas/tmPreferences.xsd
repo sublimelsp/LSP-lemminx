@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="plist">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;plist version="1.0">
+				<br> &lt;dict>
+				<br> &nbsp;&nbsp;&lt;key>scope&lt;/key>
+				<br> &nbsp;&nbsp;&lt;string>source.foo, text.bar&lt;/string>
+				<br> &nbsp;&nbsp;&lt;key>settings&lt;/key>
+				<br> &nbsp;&nbsp;&lt;dict>
+				<br> &nbsp;&nbsp;&nbsp;&nbsp;...
+				<br> &nbsp;&nbsp;&lt;/dict>
+				<br> &lt;/dict>
+				<br> &lt;/plist>
+				<br> ```
+				<br>
+				<br> All metadata files share the same topmost structure,
+				<br> which is inherited from the Property List format.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="dict" type="MainDictType" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute name="version" type="xs:string" fixed="1.0"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="MainDictType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;plist version="1.0">
+				<br> &lt;dict>
+				<br> &nbsp;&nbsp;&lt;key>scope&lt;/key>
+				<br> &nbsp;&nbsp;&lt;string>source.foo, text.bar&lt;/string>
+				<br> &nbsp;&nbsp;&lt;key>settings&lt;/key>
+				<br> &nbsp;&nbsp;&lt;dict>
+				<br> &nbsp;&nbsp;&nbsp;&nbsp;...
+				<br> &nbsp;&nbsp;&lt;/dict>
+				<br> &lt;/dict>
+				<br> &lt;/plist>
+				<br> ```
+				<br>
+				<br> All metadata files share the same topmost structure,
+				<br> which is inherited from the Property List format.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="2" maxOccurs="4">
+			<xs:element name="key" type="MainKeysType"/>
+			<xs:choice>
+				<xs:element name="dict" type="SettingsDictType"/>
+				<xs:element name="string" type="StringValueType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="MainKeysType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;key>...&lt;/key>
+				<br> ```
+				<br>
+				<br> The Property List key with the main tmPreferences keys.
+				<br>
+				<br> Valid values are:
+				<br>
+				<br> - name
+				<br> - scope
+				<br> - settings
+				<br> - uuid
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="name">
+				<xs:annotation>
+					<xs:documentation>
+					<![CDATA[
+						<br> ```xml
+						<br> &lt;key>name&lt;/key>
+						<br> &lt;string>My Preference Name&lt;/string>
+						<br> ```
+						<br>
+						<br> Name of the metadata. (optional)
+						<br>
+						<br> Note: Ignored by Sublime Text.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="scope">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>scope&lt;/key>
+						<br> &lt;string>source.foo, text.bar&lt;/string>
+						<br> ```
+						<br>
+						<br> Scope selector to determine in which context the metadata should be available.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="settings">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>settings&lt;/key>
+						<br> &lt;dict>
+						<br> &nbsp;&nbsp;...
+						<br> &lt;/dict>
+						<br> ```
+						<br>
+						<br> Container for settings.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="uuid">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>uuid&lt;/key>
+						<br> &lt;string>BC062860-3346-4D3B-8421-C5543F83D11F&lt;/string>
+						<br> ```
+						<br>
+						<br> A unique identifier for the file.
+						<br>
+						<br> Note: Ignored by Sublime Text.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="SettingsDictType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;key>settings&lt;/key>
+				<br> &lt;dict>
+				<br> &nbsp;&nbsp;...
+				<br> &lt;/dict>
+				<br> ```
+				<br>
+				<br> Container for settings.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="key" type="SettingsKeysType"/>
+			<xs:choice>
+				<xs:element name="array" type="ShellVariablesArrayType"/>
+				<xs:element name="integer" type="IntegerValueType"/>
+				<xs:element name="string" type="StringValueType"/>
+				<xs:element name="true"/>
+				<xs:element name="false"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="SettingsKeysType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;key>...&lt;/key>
+				<br> ```
+				<br>
+				<br> The Property List key with settings keys.
+				<br>
+				<br> Valid values are:
+				<br>
+				<br> - batchDecreaseIndentPattern
+				<br> - batchIncreaseIndentPattern
+				<br> - decreaseIndentPattern
+				<br> - increaseIndentPattern
+				<br> - disableIndentNextLinePattern
+				<br> - bracketIndentNextLinePattern
+				<br> - ...
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="batchDecreaseIndentPattern">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>batchDecreaseIndentPattern&lt;/key>
+						<br> &lt;string>insert regex here&lt;/string>
+						<br> ```
+						<br>
+						<br> If it matches on the current line, the line is unindented one level, during a batched reindent command.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="batchIncreaseIndentPattern">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>batchIncreaseIndentPattern&lt;/key>
+						<br> &lt;string>insert regex here&lt;/string>
+						<br> ```
+						<br>
+						<br> If it matches on the current line, the next line is indented one level, during a batched reindent command.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="decreaseIndentPattern">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>decreaseIndentPattern&lt;/key>
+						<br> &lt;string>insert regex here&lt;/string>
+						<br> ```
+						<br>
+						<br> If it matches on the current line, the line is unindented one level.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="increaseIndentPattern">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>increaseIndentPattern&lt;/key>
+						<br> &lt;string>insert regex here&lt;/string>
+						<br> ```
+						<br>
+						<br> If it matches on the current line, the next line is indented one level.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="disableIndentNextLinePattern">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>disableIndentNextLinePattern&lt;/key>
+						<br> &lt;string>insert regex here&lt;/string>
+						<br> ```
+						<br>
+						<br> If it matches on the current line, the next line will not be indented further.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bracketIndentNextLinePattern">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>bracketIndentNextLinePattern&lt;/key>
+						<br> &lt;string>insert regex here&lt;/string>
+						<br> ```
+						<br>
+						<br> If it matches on the current line, only the next line will be indented one level further.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="unIndentedLinePattern">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>unIndentedLinePattern&lt;/key>
+						<br> &lt;string>insert regex here&lt;/string>
+						<br> ```
+						<br>
+						<br> The auto-indenter will ignore lines matching this regex when computing the next line's indentation level.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cancelCompletion">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>cancelCompletion&lt;/key>
+						<br> &lt;string>insert regex here&lt;/string>
+						<br> ```
+						<br>
+						<br> If it matches on the current line, supresses the autocomplete popup.
+						]]>
+						</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="shellVariables">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>shellVariables&lt;/key>
+						<br> &lt;array>
+						<br> &nbsp;&nbsp;&lt;dict>...&lt;/dict>
+						<br> &nbsp;&nbsp;&lt;dict>...&lt;/dict>
+						<br> &nbsp;&nbsp;...
+						<br> &lt;/array>
+						<br> ```
+						<br>
+						<br> Shell variables are used for different purposes and can be accessed from snippets.
+						<br>
+						<br> Note that shell variables are defined as dictionaries in an array, and thus have a different format from settings subelements.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="showInSymbolList">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>showInSymbolList&lt;/key>
+						<br> &lt;integer>1&lt;/integer>
+						<br> ```
+						<br>
+						<br> Links symbols to the local symbol list. Valid values are `0` or `1`. If `0`, the corresponding symbols will not be displayed.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="showInIndexedReferenceList">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>showInIndexedReferenceList&lt;/key>
+						<br> &lt;integer>1&lt;/integer>
+						<br> ```
+						<br>
+						<br> Links symbols to the global reference list. Valid values are `0` or `1`. If `0`, the corresponding symbols will not be displayed.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="showInIndexedSymbolList">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>showInIndexedSymbolList&lt;/key>
+						<br> &lt;integer>1&lt;/integer>
+						<br> ```
+						<br>
+						<br> Links symbols to the global symbol list. Valid values are `0` or `1`. If `0`, the corresponding symbols will not be displayed.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="symbolTransformation">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>symbolTransformation&lt;/key>
+						<br> &lt;string>insert regex here&lt;/string>
+						<br> ```
+						<br>
+						<br> Targets the local symbol list. Semicolon-separated list of text substitutions expressed as regular expressions using the [Oniguruma](https://github.com/kkos/oniguruma/blob/master/doc/RE) syntax. Whitespace between substitution instructions is ignored.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="symbolIndexTransformation">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>symbolIndexTransformation&lt;/key>
+						<br> &lt;string>insert regex here&lt;/string>
+						<br> ```
+						<br>
+						<br> Targets the global symbol list. Semicolon-separated list of text substitutions expressed as regular expressions using the [Oniguruma](https://github.com/kkos/oniguruma/blob/master/doc/RE) syntax. Whitespace between substitution instructions is ignored.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="indentParens">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>indentParens&lt;/key>
+						<br> &lt;true/>
+						<br> ```
+						<br>
+						<br> Ignored by Sublime Text
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="indentSquareBrackets">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>indentSquareBrackets&lt;/key>
+						<br> &lt;true>
+						<br> ```
+						<br>
+						<br> Ignored by Sublime Text
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="preserveIndent">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>preserveIndent&lt;/key>
+						<br> &lt;true/>
+						<br> ```
+						<br>
+						<br> If `true` comments are ignored by auto-indenter.
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="icon">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>icon&lt;/key>
+						<br> &lt;string>...&lt;/string>
+						<br> ```
+						<br>
+						<br> Ignored by Sublime Text
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="ShellVariablesArrayType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;key>shellVariables&lt;/key>
+				<br> &lt;array>
+				<br> &nbsp;&nbsp;&lt;dict>...&lt;/dict>
+				<br> &nbsp;&nbsp;&lt;dict>...&lt;/dict>
+				<br> &nbsp;&nbsp;...
+				<br> &lt;/array>
+				<br> ```
+				<br>
+				<br> Shell variables are used for different purposes and can be accessed from snippets.
+				<br>
+				<br> Note that shell variables are defined as dictionaries in an array, and thus have a different format from settings subelements.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="dict" type="ShellVariableType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ShellVariableType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;dict>
+				<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
+				<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_START&lt;/string>
+				<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
+				<br> &nbsp;&nbsp;&lt;string>// &lt;/string>
+				<br> &lt;/dict>
+				<br> ```
+				<br>
+				<br> Subelements of `shellVariables` are dictionaries with `name` and `value` pairs.
+				<br>
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="2" maxOccurs="2">
+			<xs:element name="key" type="ShellVariableKeysType"/>
+			<xs:element name="string" type="ShellVariableValueType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="ShellVariableKeysType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;key>name&lt;/key>
+				<br> ```
+				<br>
+				<br> Property List Key with `shellVariables` dictionary keys.
+				<br>
+				<br> Valid values are `name` and `value`.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="name"/>
+			<xs:enumeration value="value"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ShellVariableValueType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;string>Insert content here&lt;/string>
+				<br> ```
+				<br>
+				<br> Property List Value with `shellVariables` dictionary values.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:union memberTypes="StringValueType">
+			<xs:simpleType>
+				<xs:restriction base="StringValueType">
+					<xs:enumeration value="TM_COMMENT_DISABLE_INDENT">
+						<xs:annotation>
+							<xs:documentation>
+								<![CDATA[
+								<br> ```xml
+								<br> &lt;dict>
+								<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
+								<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_DISABLE_INDENT&lt;/string>
+								<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
+								<br> &nbsp;&nbsp;&lt;string>no&lt;/string>
+								<br> &lt;/dict>
+								<br> ```
+								<br>
+								<br> Disables indentation for `TM_COMMENT_START` marker. (optional)
+								<br>
+								<br> Valid values are `yes` and `no`.
+								]]>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TM_COMMENT_DISABLE_INDENT_2">
+						<xs:annotation>
+							<xs:documentation>
+								<![CDATA[
+								<br> ```xml
+								<br> &lt;dict>
+								<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
+								<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_DISABLE_INDENT_2&lt;/string>
+								<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
+								<br> &nbsp;&nbsp;&lt;string>no&lt;/string>
+								<br> &lt;/dict>
+								<br> ```
+								<br>
+								<br> Disables indentation for `TM_COMMENT_START_2` marker. (optional)
+								<br>
+								<br> Valid values are `yes` and `no`.
+								]]>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TM_COMMENT_END">
+						<xs:annotation>
+							<xs:documentation>
+								<![CDATA[
+								<br> ```xml
+								<br> &lt;dict>
+								<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
+								<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_END&lt;/string>
+								<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
+								<br> &nbsp;&nbsp;&lt;string>// &lt;/string>
+								<br> &lt;/dict>
+								<br> ```
+								<br>
+								<br> Defines an end comment marker. (optional)
+								<br>
+								<br> If omitted, `TM_COMMENT_START` will be treated as a line comment marker.
+								<br>
+								<br> If present and a corresponding start comment marker can be found, the pair is treated as block comment markers.
+								]]>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TM_COMMENT_END_2">
+						<xs:annotation>
+							<xs:documentation>
+								<![CDATA[
+								<br> ```xml
+								<br> &lt;dict>
+								<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
+								<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_END_2&lt;/string>
+								<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
+								<br> &nbsp;&nbsp;&lt;string>*/&lt;/string>
+								<br> &lt;/dict>
+								<br> ```
+								<br>
+								<br> Defines an end comment marker. (optional)
+								<br>
+								<br> If omitted, `TM_COMMENT_START_2` will be treated as a line comment marker.
+								<br>
+								<br> If present and a corresponding start comment marker can be found, the pair is treated as block comment markers.
+								]]>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TM_COMMENT_START">
+						<xs:annotation>
+							<xs:documentation>
+								<![CDATA[
+								<br> ```xml
+								<br> &lt;dict>
+								<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
+								<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_START&lt;/string>
+								<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
+								<br> &nbsp;&nbsp;&lt;string>// &lt;/string>
+								<br> &lt;/dict>
+								<br> ```
+								<br>
+								<br> Defines a default comment marker. (required)
+								]]>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="TM_COMMENT_START_2">
+						<xs:annotation>
+							<xs:documentation>
+								<![CDATA[
+								<br> ```xml
+								<br> &lt;dict>
+								<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
+								<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_START_2&lt;/string>
+								<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
+								<br> &nbsp;&nbsp;&lt;string>/*&lt;/string>
+								<br> &lt;/dict>
+								<br> ```
+								<br>
+								<br> Defines an additional comment marker. (optional)
+								]]>
+							</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+
+	<!-- Simple Data Types -->
+	<xs:simpleType name="IntegerValueType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;integer>0&lt;/integer>
+				<br> ```
+				<br>
+				<br> Integer value.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+
+	<xs:simpleType name="StringValueType">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[
+				<br> ```xml
+				<br> &lt;string>Insert content here&lt;/string>
+				<br> ```
+				<br>
+				<br> Unrestricted string or regular expression value.
+				]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+</xs:schema>
