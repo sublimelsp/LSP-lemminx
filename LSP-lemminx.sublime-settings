@@ -3,12 +3,7 @@
 		// "JAVA_HOME": "C:\\Program Files\\Java\\jre1.8.0_251",
 		// "PATH": "%JAVA_HOME%\\bin;%PATH%"
 	},
-	"languages": [
-		{
-			"languageId": "xml",
-			"document_selector": "text.xml"
-		}
-	],
+	"selector": "text.plist | text.xml",
 	"settings": {
 		"xml.logs.client": true,
 		"xml.trace.server": "off",
