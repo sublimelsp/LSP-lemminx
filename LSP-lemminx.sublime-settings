@@ -3,7 +3,36 @@
 		// "JAVA_HOME": "C:\\Program Files\\Java\\jre1.8.0_251",
 		// "PATH": "%JAVA_HOME%\\bin;%PATH%"
 	},
+
+	// JavaVM arguments to run LemMinX with
+	//
+	// Note:
+	//   Copy the whole list to your user settings
+	//   in order to add, remove or modify single arguments.
+	"java_vmargs": [
+        "-Xmx64M",
+        "-XX:+UseG1GC",
+        "-XX:+UseStringDeduplication",
+        "-DwatchParentProcess=false",
+
+		// use system proxy configuration
+		"-Djava.net.useSystemProxies=true",
+
+		// user authentication
+		// "-Dhttp.proxyUser=<user>",
+		// "-Dhttp.proxyPassword=<password>",
+
+		// custom http proxy
+		// "-Dhttp.proxyHost=<proxy_host>",
+		// "-Dhttp.proxyPort=<proxy_port>",
+
+		// custom https proxy
+		// "-Dhttps.proxyHost=<proxy_host>",
+		// "-Dhttps.proxyPort=<proxy_port>",
+	],
+
 	"selector": "text.plist | text.xml",
+
 	"settings": {
 		"xml.logs.client": true,
 		"xml.trace.server": "off",

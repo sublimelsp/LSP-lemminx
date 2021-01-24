@@ -49,16 +49,19 @@ class LemminxPlugin(AbstractPlugin):
         }
     ]
 
+    settings = None
+    settings_name = "LSP-lemminx.sublime-settings"
+    settings_resource_path = "Packages/{}/{}".format(__package__, settings_name)
+
     @classmethod
     def name(cls):
         return "LemMinX"
 
     @classmethod
     def configuration(cls):
-        return (
-            sublime.load_settings("LSP-lemminx.sublime-settings"),
-            "Packages/" + __package__ + "/LSP-lemminx.sublime-settings"
-        )
+        if cls.settings is None:
+            cls.settings = sublime.load_settings(cls.settings_name)
+        return (cls.settings, cls.settings_resource_path)
 
     @classmethod
     def needs_update_or_installation(cls):
@@ -99,13 +102,8 @@ class LemminxPlugin(AbstractPlugin):
     @classmethod
     def on_pre_start(cls, window, initiating_view, workspace_folders, configuration):
         configuration.command = [
-            "java",
-            "-Xmx64M",
-            "-XX:+UseG1GC",
-            "-XX:+UseStringDeduplication",
-            "-DwatchParentProcess=false",
-            "-jar", cls.server_jar()
-        ]
+            "java", "-jar", cls.server_jar()
+        ] + cls.settings.get("java_vmargs", [])
 
     @classmethod
     def on_settings_changed(cls, dotted):
