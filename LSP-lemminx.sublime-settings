@@ -31,7 +31,11 @@
 		// "-Dhttps.proxyPort=<proxy_port>",
 	],
 
+	// base scope selectors to attach to
 	"selector": "text.plist | text.xml",
+
+	// type of buffers to attach to
+	"schemes": ["file", "buffer", "res"],
 
 	"settings": {
 		"xml.logs.client": true,
