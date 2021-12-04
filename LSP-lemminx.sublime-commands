@@ -8,6 +8,14 @@
 		}
 	},
 	{
+		"caption": "XML: Check File Pattern",
+		"command": "lsp_execute",
+		"args": {
+			"command_name": "xml.check.file.pattern",
+			"command_args": ["${document_id}"]
+		}
+	},
+	{
 		"caption": "XML: Validate All Files",
 		"command": "lsp_execute",
 		"args": {
