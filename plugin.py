@@ -7,8 +7,8 @@ from urllib.request import urlretrieve
 from LSP.plugin import AbstractPlugin, register_plugin, unregister_plugin
 
 
-SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.18.1/org.eclipse.lemminx-0.18.1-uber.jar"
-SERVER_SHA256 = "b9ddef66f391e582102ea2be1420cba9f473caae8a6a5413c8d8a76dccb072b3"
+SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.18.2/org.eclipse.lemminx-0.18.2-uber.jar"
+SERVER_SHA256 = "bb9c441193a51a6d03dadfcb12edc300ad65ea6b4716b2836b02f7e67b23a1e9"
 
 
 def plugin_loaded():
