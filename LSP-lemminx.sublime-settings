@@ -1,7 +1,10 @@
 {
 	"env": {
 		// "JAVA_HOME": "C:\\Program Files\\Java\\jre1.8.0_251",
-		// "PATH": "%JAVA_HOME%\\bin;%PATH%"
+		// "HTTP_PROXY_HOST": "",
+		// "HTTP_PROXY_PORT": "",
+		// "HTTP_PROXY_USERNAME": "",
+		// "HTTP_PROXY_PASSWORD": "",
 	},
 
 	// JavaVM arguments to run LemMinX with
@@ -10,10 +13,10 @@
 	//   Copy the whole list to your user settings
 	//   in order to add, remove or modify single arguments.
 	"java_vmargs": [
-        "-Xmx64M",
-        "-XX:+UseG1GC",
-        "-XX:+UseStringDeduplication",
-        "-DwatchParentProcess=false",
+		"-Xmx64M",
+		"-XX:+UseG1GC",
+		"-XX:+UseStringDeduplication",
+		"-DwatchParentProcess=false",
 
 		// use system proxy configuration
 		"-Djava.net.useSystemProxies=true",
@@ -37,34 +40,64 @@
 	// type of buffers to attach to
 	"schemes": ["file", "buffer", "res"],
 
-	"settings": {
-		"xml.logs.client": true,
-		"xml.trace.server": "off",
+	"initializationOptions": {
+		"settings": {
+			"xml.logs.client": true,
+			"xml.logs.file": "$storage_path/lemminx.log",
+			"xml.trace.server": "off",
+			"xml.telemetry.enabled": false,
+			"xml.useCache": true
+		},
+		"extendedClientCapabilities": {
+			"actionableNotificationSupport": false,
+			"openSettingsCommandSupport": false,
+			"bindingWizardSupport": false,
+			"shouldLanguageServerExitOnShutdown": true
+		}
+	},
 
+	"settings": {
 		"xml.catalogs": [],
+
 		"xml.fileAssociations": [],
+
 		"xml.codeLens.enabled": false,
-		"xml.completion.autoCloseTags": false,
-		"xml.format.emptyElements": "ignore",
+
+		"xml.completion.autoCloseTags": true,
+		"xml.completion.autoCloseRemovesContent": true,
+
 		"xml.format.enabled": true,
+		"xml.format.closingBracketNewLine": false,
+		"xml.format.emptyElements": "ignore",
 		"xml.format.enforceQuoteStyle": "ignore",
+		"xml.format.insertFinalNewline": false,
 		"xml.format.joinCDATALines": false,
 		"xml.format.joinCommentLines": false,
 		"xml.format.joinContentLines": false,
 		"xml.format.preserveAttributeLineBreaks": false,
 		"xml.format.preservedNewlines": 2,
 		"xml.format.preserveEmptyContent": false,
-		"xml.format.spaceBeforeEmptyCloseTag": true,
+		"xml.format.spaceBeforeEmptyCloseTag": false,
 		"xml.format.splitAttributes": false,
+		"xml.format.splitAttributesIndentSize": 2,
+		"xml.format.trimFinalNewlines": false,
+		"xml.format.trimTrailingWhitespace": false,
+		"xml.format.xsiSchemaLocationSplit": "none",
+
 		"xml.preferences.quoteStyle": "double",
 		"xml.preferences.showSchemaDocumentationType": "all",
+
 		"xml.symbols.enabled": true,
 		"xml.symbols.excluded": [],
+		"xml.symbols.filters": [],
 		"xml.symbols.maxItemsComputed": 5000,
-		"xml.validation.disallowDocTypeDecl": false,
+		"xml.symbols.showReferencedGrammars": true,
+
 		"xml.validation.enabled": true,
+		"xml.validation.disallowDocTypeDecl": false,
+		"xml.validation.namespaces.enabled": "always",
 		"xml.validation.noGrammar": "hint",
-		"xml.validation.resolveExternalEntities": false,
+		"xml.validation.resolveExternalEntities": true,
 		"xml.validation.schema.enabled": "always",
 	}
 }
