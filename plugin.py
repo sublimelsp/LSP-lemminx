@@ -4,7 +4,12 @@ import sublime
 
 from urllib.request import urlretrieve
 
-from LSP.plugin import AbstractPlugin, register_plugin, unregister_plugin
+from LSP.plugin import (
+    AbstractPlugin,
+    register_plugin,
+    filename_to_uri,
+    unregister_plugin,
+)
 
 
 SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.18.4/org.eclipse.lemminx-0.18.4-uber.jar"
@@ -29,23 +34,23 @@ class LemminxPlugin(AbstractPlugin):
     file_associations = [
         {
             "pattern": "**/*.sublime-snippet",
-            "systemId": "$storage_path/cache/sublime/sublime-snippet.xsd"
+            "systemId": "$storage_uri/cache/sublime/sublime-snippet.xsd"
         },
         {
             "pattern": "**/*.tmPreferences",
-            "systemId": "$storage_path/cache/sublime/tmPreferences.xsd"
+            "systemId": "$storage_uri/cache/sublime/tmPreferences.xsd"
         },
         {
             "pattern": "**/*.hidden-tmPreferences",
-            "systemId": "$storage_path/cache/sublime/tmPreferences.xsd"
+            "systemId": "$storage_uri/cache/sublime/tmPreferences.xsd"
         },
         {
             "pattern": "**/*.tmTheme",
-            "systemId": "$storage_path/cache/sublime/tmTheme.xsd"
+            "systemId": "$storage_uri/cache/sublime/tmTheme.xsd"
         },
         {
             "pattern": "**/*.hidden-tmTheme",
-            "systemId": "$storage_path/cache/sublime/tmTheme.xsd"
+            "systemId": "$storage_uri/cache/sublime/tmTheme.xsd"
         }
     ]
 
@@ -110,7 +115,7 @@ class LemminxPlugin(AbstractPlugin):
         # prepend a list of fixed file associations
         dotted.set(
             "xml.fileAssociations",
-            cls.file_associations + dotted.get("xml.fileAssociations") or []
+            cls.file_associations + (dotted.get("xml.fileAssociations") or [])
         )
         # adjust working dir to package storage directory
         dotted.set("xml.server.workDir", cls.server_dir())
@@ -119,7 +124,9 @@ class LemminxPlugin(AbstractPlugin):
     def additional_variables(cls):
         return {
             "package_path": cls.package_dir(),
-            "storage_path": cls.server_dir()
+            "storage_path": cls.server_dir(),
+            "package_uri": cls.package_uri(),
+            "storage_uri": cls.server_uri()
         }
 
     # internal methods
@@ -129,8 +136,16 @@ class LemminxPlugin(AbstractPlugin):
         return os.path.join(sublime.packages_path(), __package__)
 
     @classmethod
+    def package_uri(cls):
+        return filename_to_uri(cls.package_dir())
+
+    @classmethod
     def server_dir(cls):
         return os.path.join(cls.storage_path(), __package__)
+
+    @classmethod
+    def server_uri(cls):
+        return filename_to_uri(cls.server_dir())
 
     @classmethod
     def server_jar(cls):
