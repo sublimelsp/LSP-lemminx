@@ -409,7 +409,21 @@
 						<br> &lt;true/>
 						<br> ```
 						<br>
-						<br> Ignored by Sublime Text
+						<br> If `true` the whole block is indented by one level.
+						<br>
+						<br> ```js
+						<br> let foo = (
+						<br> &#x2002;&#x2002;&#x2002;&#x2002;&#x2002;&#x2002;&#x2002;&#x2002;|
+						<br> &#x2002;&#x2002;&#x2002;&#x2002;)
+						<br> ```
+						<br>
+						<br> If `false` the whole block is aligned with the first line.
+						<br>
+						<br> ```js
+						<br> let foo = (
+						<br> &#x2002;&#x2002;&#x2002;&#x2002;|
+						<br> )
+						<br> ```
 						]]>
 					</xs:documentation>
 				</xs:annotation>
@@ -420,10 +434,24 @@
 						<![CDATA[
 						<br> ```xml
 						<br> &lt;key>indentSquareBrackets&lt;/key>
-						<br> &lt;true>
+						<br> &lt;false/>
 						<br> ```
 						<br>
-						<br> Ignored by Sublime Text
+						<br> If `true` the whole block is indented by one level.
+						<br>
+						<br> ```js
+						<br> let foo = [
+						<br> &#x2002;&#x2002;&#x2002;&#x2002;&#x2002;&#x2002;&#x2002;&#x2002;|
+						<br> &#x2002;&#x2002;&#x2002;&#x2002;]
+						<br> ```
+						<br>
+						<br> If `false` the whole block is aligned with the first line.
+						<br>
+						<br> ```js
+						<br> let foo = [
+						<br> &#x2002;&#x2002;&#x2002;&#x2002;|
+						<br> ]
+						<br> ```
 						]]>
 					</xs:documentation>
 				</xs:annotation>
