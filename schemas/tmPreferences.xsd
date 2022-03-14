@@ -9,12 +9,12 @@
 				<br> ```xml
 				<br> &lt;plist version="1.0">
 				<br> &lt;dict>
-				<br> &nbsp;&nbsp;&lt;key>scope&lt;/key>
-				<br> &nbsp;&nbsp;&lt;string>source.foo, text.bar&lt;/string>
-				<br> &nbsp;&nbsp;&lt;key>settings&lt;/key>
-				<br> &nbsp;&nbsp;&lt;dict>
-				<br> &nbsp;&nbsp;&nbsp;&nbsp;...
-				<br> &nbsp;&nbsp;&lt;/dict>
+				<br> &#x2002;&#x2002;&lt;key>scope&lt;/key>
+				<br> &#x2002;&#x2002;&lt;string>source.foo, text.bar&lt;/string>
+				<br> &#x2002;&#x2002;&lt;key>settings&lt;/key>
+				<br> &#x2002;&#x2002;&lt;dict>
+				<br> &#x2002;&#x2002;&#x2002;&#x2002;...
+				<br> &#x2002;&#x2002;&lt;/dict>
 				<br> &lt;/dict>
 				<br> &lt;/plist>
 				<br> ```
@@ -39,12 +39,12 @@
 				<br> ```xml
 				<br> &lt;plist version="1.0">
 				<br> &lt;dict>
-				<br> &nbsp;&nbsp;&lt;key>scope&lt;/key>
-				<br> &nbsp;&nbsp;&lt;string>source.foo, text.bar&lt;/string>
-				<br> &nbsp;&nbsp;&lt;key>settings&lt;/key>
-				<br> &nbsp;&nbsp;&lt;dict>
-				<br> &nbsp;&nbsp;&nbsp;&nbsp;...
-				<br> &nbsp;&nbsp;&lt;/dict>
+				<br> &#x2002;&#x2002;&lt;key>scope&lt;/key>
+				<br> &#x2002;&#x2002;&lt;string>source.foo, text.bar&lt;/string>
+				<br> &#x2002;&#x2002;&lt;key>settings&lt;/key>
+				<br> &#x2002;&#x2002;&lt;dict>
+				<br> &#x2002;&#x2002;&#x2002;&#x2002;...
+				<br> &#x2002;&#x2002;&lt;/dict>
 				<br> &lt;/dict>
 				<br> &lt;/plist>
 				<br> ```
@@ -120,7 +120,7 @@
 						<br> ```xml
 						<br> &lt;key>settings&lt;/key>
 						<br> &lt;dict>
-						<br> &nbsp;&nbsp;...
+						<br> &#x2002;&#x2002;...
 						<br> &lt;/dict>
 						<br> ```
 						<br>
@@ -155,7 +155,7 @@
 				<br> ```xml
 				<br> &lt;key>settings&lt;/key>
 				<br> &lt;dict>
-				<br> &nbsp;&nbsp;...
+				<br> &#x2002;&#x2002;...
 				<br> &lt;/dict>
 				<br> ```
 				<br>
@@ -317,9 +317,9 @@
 						<br> ```xml
 						<br> &lt;key>shellVariables&lt;/key>
 						<br> &lt;array>
-						<br> &nbsp;&nbsp;&lt;dict>...&lt;/dict>
-						<br> &nbsp;&nbsp;&lt;dict>...&lt;/dict>
-						<br> &nbsp;&nbsp;...
+						<br> &#x2002;&#x2002;&lt;dict>...&lt;/dict>
+						<br> &#x2002;&#x2002;&lt;dict>...&lt;/dict>
+						<br> &#x2002;&#x2002;...
 						<br> &lt;/array>
 						<br> ```
 						<br>
@@ -494,9 +494,9 @@
 				<br> ```xml
 				<br> &lt;key>shellVariables&lt;/key>
 				<br> &lt;array>
-				<br> &nbsp;&nbsp;&lt;dict>...&lt;/dict>
-				<br> &nbsp;&nbsp;&lt;dict>...&lt;/dict>
-				<br> &nbsp;&nbsp;...
+				<br> &#x2002;&#x2002;&lt;dict>...&lt;/dict>
+				<br> &#x2002;&#x2002;&lt;dict>...&lt;/dict>
+				<br> &#x2002;&#x2002;...
 				<br> &lt;/array>
 				<br> ```
 				<br>
@@ -517,10 +517,10 @@
 				<![CDATA[
 				<br> ```xml
 				<br> &lt;dict>
-				<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
-				<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_START&lt;/string>
-				<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
-				<br> &nbsp;&nbsp;&lt;string>// &lt;/string>
+				<br> &#x2002;&#x2002;&lt;key>name&lt;/key>
+				<br> &#x2002;&#x2002;&lt;string>TM_COMMENT_START&lt;/string>
+				<br> &#x2002;&#x2002;&lt;key>value&lt;/key>
+				<br> &#x2002;&#x2002;&lt;string>// &lt;/string>
 				<br> &lt;/dict>
 				<br> ```
 				<br>
@@ -576,10 +576,10 @@
 								<![CDATA[
 								<br> ```xml
 								<br> &lt;dict>
-								<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
-								<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_DISABLE_INDENT&lt;/string>
-								<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
-								<br> &nbsp;&nbsp;&lt;string>no&lt;/string>
+								<br> &#x2002;&#x2002;&lt;key>name&lt;/key>
+								<br> &#x2002;&#x2002;&lt;string>TM_COMMENT_DISABLE_INDENT&lt;/string>
+								<br> &#x2002;&#x2002;&lt;key>value&lt;/key>
+								<br> &#x2002;&#x2002;&lt;string>no&lt;/string>
 								<br> &lt;/dict>
 								<br> ```
 								<br>
@@ -596,10 +596,10 @@
 								<![CDATA[
 								<br> ```xml
 								<br> &lt;dict>
-								<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
-								<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_DISABLE_INDENT_2&lt;/string>
-								<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
-								<br> &nbsp;&nbsp;&lt;string>no&lt;/string>
+								<br> &#x2002;&#x2002;&lt;key>name&lt;/key>
+								<br> &#x2002;&#x2002;&lt;string>TM_COMMENT_DISABLE_INDENT_2&lt;/string>
+								<br> &#x2002;&#x2002;&lt;key>value&lt;/key>
+								<br> &#x2002;&#x2002;&lt;string>no&lt;/string>
 								<br> &lt;/dict>
 								<br> ```
 								<br>
@@ -616,10 +616,10 @@
 								<![CDATA[
 								<br> ```xml
 								<br> &lt;dict>
-								<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
-								<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_END&lt;/string>
-								<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
-								<br> &nbsp;&nbsp;&lt;string>// &lt;/string>
+								<br> &#x2002;&#x2002;&lt;key>name&lt;/key>
+								<br> &#x2002;&#x2002;&lt;string>TM_COMMENT_END&lt;/string>
+								<br> &#x2002;&#x2002;&lt;key>value&lt;/key>
+								<br> &#x2002;&#x2002;&lt;string>// &lt;/string>
 								<br> &lt;/dict>
 								<br> ```
 								<br>
@@ -638,10 +638,10 @@
 								<![CDATA[
 								<br> ```xml
 								<br> &lt;dict>
-								<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
-								<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_END_2&lt;/string>
-								<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
-								<br> &nbsp;&nbsp;&lt;string>*/&lt;/string>
+								<br> &#x2002;&#x2002;&lt;key>name&lt;/key>
+								<br> &#x2002;&#x2002;&lt;string>TM_COMMENT_END_2&lt;/string>
+								<br> &#x2002;&#x2002;&lt;key>value&lt;/key>
+								<br> &#x2002;&#x2002;&lt;string>*/&lt;/string>
 								<br> &lt;/dict>
 								<br> ```
 								<br>
@@ -660,10 +660,10 @@
 								<![CDATA[
 								<br> ```xml
 								<br> &lt;dict>
-								<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
-								<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_START&lt;/string>
-								<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
-								<br> &nbsp;&nbsp;&lt;string>// &lt;/string>
+								<br> &#x2002;&#x2002;&lt;key>name&lt;/key>
+								<br> &#x2002;&#x2002;&lt;string>TM_COMMENT_START&lt;/string>
+								<br> &#x2002;&#x2002;&lt;key>value&lt;/key>
+								<br> &#x2002;&#x2002;&lt;string>// &lt;/string>
 								<br> &lt;/dict>
 								<br> ```
 								<br>
@@ -678,10 +678,10 @@
 								<![CDATA[
 								<br> ```xml
 								<br> &lt;dict>
-								<br> &nbsp;&nbsp;&lt;key>name&lt;/key>
-								<br> &nbsp;&nbsp;&lt;string>TM_COMMENT_START_2&lt;/string>
-								<br> &nbsp;&nbsp;&lt;key>value&lt;/key>
-								<br> &nbsp;&nbsp;&lt;string>/*&lt;/string>
+								<br> &#x2002;&#x2002;&lt;key>name&lt;/key>
+								<br> &#x2002;&#x2002;&lt;string>TM_COMMENT_START_2&lt;/string>
+								<br> &#x2002;&#x2002;&lt;key>value&lt;/key>
+								<br> &#x2002;&#x2002;&lt;string>/*&lt;/string>
 								<br> &lt;/dict>
 								<br> ```
 								<br>
