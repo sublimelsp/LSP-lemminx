@@ -166,7 +166,7 @@
 		<xs:sequence maxOccurs="unbounded">
 			<xs:element name="key" type="SettingsKeysType"/>
 			<xs:choice>
-				<xs:element name="array" type="ShellVariablesArrayType"/>
+				<xs:element name="array" type="FoldScopeOrShellVariablesArrayType"/>
 				<xs:element name="integer" type="IntegerValueType"/>
 				<xs:element name="string" type="StringValueType"/>
 				<xs:element name="true"/>
@@ -470,6 +470,64 @@
 					</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="indentationFoldingEnabled">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>indentationFoldingEnabled&lt;/key>
+						<br> &lt;true/>
+						<br> ```
+						<br>
+						<br> If `true` indentation based folding is enabled within the scope.
+						<hr>
+						<br> Requires: ST 4131+
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="scopeFoldingEnabled">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>scopeFoldingEnabled&lt;/key>
+						<br> &lt;true/>
+						<br> ```
+						<br>
+						<br> If `true` syntax based folding is enabled within the scope.
+						<hr>
+						<br> Requires: ST 4131+
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="foldScopes">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>foldScopes&lt;/key>
+						<br> &lt;array>
+						<br> &#x2002;&#x2002;&lt;dict>
+						<br> &#x2002;&#x2002;&#x2002;&#x2002;&lt;key>begin&lt;/key>
+						<br> &#x2002;&#x2002;&#x2002;&#x2002;&lt;string>punctuation.definition.brackets.begin&lt;/string>
+						<br> &#x2002;&#x2002;&#x2002;&#x2002;&lt;key>end&lt;/key>
+						<br> &#x2002;&#x2002;&#x2002;&#x2002;&lt;string>punctuation.definition.brackets.end&lt;/string>
+						<br> &#x2002;&#x2002;&#x2002;&#x2002;&lt;key>excludeTrailingNewlines&lt;/key>
+						<br> &#x2002;&#x2002;&#x2002;&#x2002;&lt;false/>
+						<br> &#x2002;&#x2002;&lt;/dict>
+						<br> &#x2002;&#x2002;...
+						<br> &lt;/array>
+						<br> ```
+						<br>
+						<br> The list of fold marker definitions each represented as dictionary.
+						<hr>
+						<br> Requires: ST 4131+
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="icon">
 				<xs:annotation>
 					<xs:documentation>
@@ -487,15 +545,19 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:complexType name="ShellVariablesArrayType">
+	<xs:complexType name="FoldScopeOrShellVariablesArrayType">
 		<xs:annotation>
 			<xs:documentation>
 				<![CDATA[
 				<br> ```xml
 				<br> &lt;key>shellVariables&lt;/key>
 				<br> &lt;array>
-				<br> &#x2002;&#x2002;&lt;dict>...&lt;/dict>
-				<br> &#x2002;&#x2002;&lt;dict>...&lt;/dict>
+				<br> &#x2002;&#x2002;&lt;dict>
+				<br> &#x2002;&#x2002;&#x2002;&#x2002;&lt;key>name&lt;/key>
+				<br> &#x2002;&#x2002;&#x2002;&#x2002;&lt;string>TM_COMMENT_START&lt;/string>
+				<br> &#x2002;&#x2002;&#x2002;&#x2002;&lt;key>value&lt;/key>
+				<br> &#x2002;&#x2002;&#x2002;&#x2002;&lt;string>// &lt;/string>
+				<br> &#x2002;&#x2002;&lt;/dict>
 				<br> &#x2002;&#x2002;...
 				<br> &lt;/array>
 				<br> ```
@@ -507,14 +569,29 @@
 			</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="dict" type="ShellVariableType" maxOccurs="unbounded"/>
+			<xs:element name="dict" type="FoldScopeOrShellVariableType" maxOccurs="unbounded"/>
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:complexType name="ShellVariableType">
+	<xs:complexType name="FoldScopeOrShellVariableType">
 		<xs:annotation>
 			<xs:documentation>
 				<![CDATA[
+				<br> Subelements of `foldScopes` are dictionaries with:
+				<br>
+				<br> ```xml
+				<br> &lt;dict>
+				<br> &#x2002;&#x2002;&lt;key>begin&lt;/key>
+				<br> &#x2002;&#x2002;&lt;string>punctuation.definition.brackets.begin&lt;/string>
+				<br> &#x2002;&#x2002;&lt;key>end&lt;/key>
+				<br> &#x2002;&#x2002;&lt;string>punctuation.definition.brackets.end&lt;/string>
+				<br> &#x2002;&#x2002;&lt;key>excludeTrailingNewlines&lt;/key>
+				<br> &#x2002;&#x2002;&lt;false/>
+				<br> &lt;/dict>
+				<br> ```
+				<br>
+				<br> Subelements of `shellVariables` are dictionaries with:
+				<br>
 				<br> ```xml
 				<br> &lt;dict>
 				<br> &#x2002;&#x2002;&lt;key>name&lt;/key>
@@ -523,39 +600,123 @@
 				<br> &#x2002;&#x2002;&lt;string>// &lt;/string>
 				<br> &lt;/dict>
 				<br> ```
-				<br>
-				<br> Subelements of `shellVariables` are dictionaries with `name` and `value` pairs.
-				<br>
 				]]>
 			</xs:documentation>
 		</xs:annotation>
-		<xs:sequence minOccurs="2" maxOccurs="2">
-			<xs:element name="key" type="ShellVariableKeysType"/>
-			<xs:element name="string" type="ShellVariableValueType"/>
+		<xs:sequence minOccurs="2" maxOccurs="3">
+			<xs:element name="key" type="FoldScopeOrShellVariableKeysType"/>
+			<xs:choice>
+				<xs:element name="string" type="FoldScopeOrShellVariableValueType"/>
+				<xs:element name="true"/>
+				<xs:element name="false"/>
+			</xs:choice>
 		</xs:sequence>
 	</xs:complexType>
 
-	<xs:simpleType name="ShellVariableKeysType">
+	<xs:simpleType name="FoldScopeOrShellVariableKeysType">
 		<xs:annotation>
 			<xs:documentation>
 				<![CDATA[
 				<br> ```xml
-				<br> &lt;key>name&lt;/key>
+				<br> &lt;key>...&lt;/key>
 				<br> ```
 				<br>
-				<br> Property List Key with `shellVariables` dictionary keys.
+				<br> **Property List Key**
+				<hr>
+				<br> Valid values in `foldScopes`:
 				<br>
-				<br> Valid values are `name` and `value`.
+				<br>	- `begin`
+				<br>	- `end`
+				<br>	- `excludeTrailingNewlines`
+				<br>
+				<br> Valid values in `shellVariables`:
+				<br>
+				<br>	- `name`
+				<br>	- `value`
 				]]>
 			</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="name"/>
-			<xs:enumeration value="value"/>
+			<xs:enumeration value="name">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>name&lt;/key>
+						<br> &lt;string>TM_COMMENT_START&lt;/string>
+						<br> ```
+						<br>
+						<br> A shell variable's name
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="value">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>value&lt;/key>
+						<br> &lt;string>A string value&lt;/string>
+						<br> ```
+						<br>
+						<br> A shell variable's value
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="begin">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>begin&lt;/key>
+						<br> &lt;string>punctuation.definition.brackets.begin&lt;/string>
+						<br> ```
+						<br>
+						<br> A selector which indicates the start of a folding region.
+						<hr>
+						<br> Requires: ST 4131+
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="end">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>end&lt;/key>
+						<br> &lt;string>punctuation.definition.brackets.end&lt;/string>
+						<br> ```
+						<br>
+						<br> A selector which indicates the end of a folding region.
+						<hr>
+						<br> Requires: ST 4131+
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="excludeTrailingNewlines">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[
+						<br> ```xml
+						<br> &lt;key>excludeTrailingNewlines&lt;/key>
+						<br> &lt;true/>
+						<br> ```
+						<br>
+						<br> If `true` indentation based folding is enabled within the scope.
+						<hr>
+						<br> Requires: ST 4131+
+						]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:simpleType name="ShellVariableValueType">
+	<xs:simpleType name="FoldScopeOrShellVariableValueType">
 		<xs:annotation>
 			<xs:documentation>
 				<![CDATA[
@@ -563,7 +724,9 @@
 				<br> &lt;string>Insert content here&lt;/string>
 				<br> ```
 				<br>
-				<br> Property List Value with `shellVariables` dictionary values.
+				<br> **Property List Value**
+				<hr>
+				<br> with `foldScopes` or `shellVariables` dictionary values.
 				]]>
 			</xs:documentation>
 		</xs:annotation>
