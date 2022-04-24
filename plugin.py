@@ -12,8 +12,8 @@ from LSP.plugin import (
 )
 
 
-SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.19.1/org.eclipse.lemminx-0.19.1-uber.jar"
-SERVER_SHA256 = "9c7c4c2de0805595f23049c80c0ecf49330428e51f533ae5e52bbba279e9b629"
+SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.20.0/org.eclipse.lemminx-0.20.0-uber.jar"
+SERVER_SHA256 = "fd373506436879cc8f5e7fc965ab2d611d784c1ea515ee93ec1b4cb15303e4a2"
 
 
 def plugin_loaded():
