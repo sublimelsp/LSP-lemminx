@@ -19,8 +19,8 @@ SERVER_SHA256 = "fd373506436879cc8f5e7fc965ab2d611d784c1ea515ee93ec1b4cb15303e4a
 def plugin_loaded():
     try:
         LemminxPlugin.install_schemas()
-    except OSError:
-        print("LSP-lemminx: Unable to install schemes!")
+    except OSError as e:
+        print("LSP-lemminx: Unable to install schemas!", e)
 
     register_plugin(LemminxPlugin)
 
@@ -34,23 +34,23 @@ class LemminxPlugin(AbstractPlugin):
     file_associations = [
         {
             "pattern": "**/*.sublime-snippet",
-            "systemId": "$storage_uri/cache/sublime/sublime-snippet.xsd"
+            "systemId": "$storage_uri/cache/sublime/schemas/sublime-snippet.xsd"
         },
         {
             "pattern": "**/*.tmPreferences",
-            "systemId": "$storage_uri/cache/sublime/tmPreferences.xsd"
+            "systemId": "$storage_uri/cache/sublime/schemas/tmPreferences.xsd"
         },
         {
             "pattern": "**/*.hidden-tmPreferences",
-            "systemId": "$storage_uri/cache/sublime/tmPreferences.xsd"
+            "systemId": "$storage_uri/cache/sublime/schemas/tmPreferences.xsd"
         },
         {
             "pattern": "**/*.tmTheme",
-            "systemId": "$storage_uri/cache/sublime/tmTheme.xsd"
+            "systemId": "$storage_uri/cache/sublime/schemas/tmTheme.xsd"
         },
         {
             "pattern": "**/*.hidden-tmTheme",
-            "systemId": "$storage_uri/cache/sublime/tmTheme.xsd"
+            "systemId": "$storage_uri/cache/sublime/schemas/tmTheme.xsd"
         }
     ]
 
@@ -169,6 +169,7 @@ class LemminxPlugin(AbstractPlugin):
             )
         else:
             import shutil
+            dest_path += '/schemas/'
             os.makedirs(dest_path, exist_ok=True)
             src_path = os.path.join(pkg_path, 'schemas')
             for f in os.listdir(src_path):
