@@ -163,10 +163,11 @@ class LemminxPlugin(AbstractPlugin):
         if ".sublime-package" in pkg_path:
             import zipfile
             pkg = zipfile.ZipFile(file=pkg_path)
-            pkg.extractall(
-                path=dest_path,
-                members=(m for m in pkg.namelist() if m.startswith("schemas"))
-            )
+            for zipinfo in pkg.infolist():
+                if zipinfo.filename.startswith("schemas/"):
+                    zipinfo.filename = zipinfo.filename[len("schemas/"):]
+                    if zipinfo.filename:
+                        pkg.extract(zipinfo, path=dest_path)
         else:
             import shutil
             os.makedirs(dest_path, exist_ok=True)
