@@ -13,7 +13,7 @@
 	//   Copy the whole list to your user settings
 	//   in order to add, remove or modify single arguments.
 	"java_vmargs": [
-		"-Xmx64M",
+		"-Xmx128M",
 		"-XX:+UseG1GC",
 		"-XX:+UseStringDeduplication",
 		"-DwatchParentProcess=false",
@@ -34,6 +34,20 @@
 		// "-Dhttps.proxyPort=<proxy_port>",
 	],
 
+	// The LemMinX version to install. Valid values are fixed versions like `0.19.0` or `latest`.
+	"server_version": "latest",
+
+	// If "true" compiled GraalVM binary is used, if supported by actual platform.
+	// If "false" default JavaVM jar is used.
+	"server_binary": true,
+
+	// Command line arguments to supply to the binary server.
+	// Please refer to https://www.graalvm.org/reference-manual/native-image/HostedvsRuntimeOptions.
+	// For example, you can increase the maximum memory that the server can use to 1 GB by adding `-Xmx1g`
+	"server_binary_args": [
+		"-Xmx128M",
+	],
+
 	// base scope selectors to attach to
 	"selector": "text.plist | text.xml",
 
@@ -44,7 +58,7 @@
 		"settings": {
 			"xml.extension.jars": [],
 			"xml.logs.client": true,
-			"xml.logs.file": "$storage_path/lemminx.log",
+			// "xml.logs.file": "$storage_path/lemminx.log",
 			"xml.trace.server": "off",
 			"xml.telemetry.enabled": false,
 			"xml.useCache": true
