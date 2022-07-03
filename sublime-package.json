@@ -34,7 +34,7 @@
 										"verbose"
 									],
 									"default": "off",
-									"markdownDescription": "Traces the communication between Sublime Text and the XML language server in the Output view. Default is `off`.",
+									"markdownDescription": "Traces the communication between Sublime Text and the XML language server in the Output view. Default is `off`."
 								},
 								"xml.logs.client": {
 									"type": "boolean",
@@ -52,7 +52,7 @@
 									"items": {
 										"type": "string"
 									},
-									"markdownDescription": "Register XML catalog files. See how to configure [XML catalog with XSD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-catalog-with-xsd%22%7D%5D) or [XML catalog with DTD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-catalog-with-dtd%22%7D%5D) for more information.",
+									"markdownDescription": "Register XML catalog files. See how to configure [XML catalog with XSD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-catalog-with-xsd%22%7D%5D) or [XML catalog with DTD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-catalog-with-dtd%22%7D%5D) for more information."
 								},
 								"xml.fileAssociations": {
 									"type": "array",
@@ -74,12 +74,12 @@
 											"systemId"
 										]
 									},
-									"markdownDescription": "Allows XML schemas/ DTD to be associated to file name patterns. Please refer to [XML file association with XSD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-xsd%22%7D%5D) or [XML file association with DTD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-dtd%22%7D%5D) for more information. \n\nExample:\n```json\n[{\n  \"pattern\": \"file1.xml\",\n  \"systemId\": \"path/to/file.xsd\"\n},\n{\n  \"pattern\": \"**/*.xsd\",\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\"\n}]\n```",
+									"markdownDescription": "Allows XML schemas/ DTD to be associated to file name patterns. Please refer to [XML file association with XSD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-xsd%22%7D%5D) or [XML file association with DTD](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xml-file-association-with-dtd%22%7D%5D) for more information. \n\nExample:\n```json\n[{\n  \"pattern\": \"file1.xml\",\n  \"systemId\": \"path/to/file.xsd\"\n},\n{\n  \"pattern\": \"**/*.xsd\",\n  \"systemId\": \"http://www.w3.org/2001/XMLSchema.xsd\"\n}]\n```"
 								},
 								"xml.format.enabled": {
 									"type": "boolean",
 									"default": true,
-									"markdownDescription": "Enable/disable ability to format document. Default is `true`.",
+									"markdownDescription": "Enable/disable ability to format document. Default is `true`."
 								},
 								"xml.format.emptyElements": {
 									"type": "string",
@@ -89,7 +89,7 @@
 										"expand"
 									],
 									"default": "ignore",
-									"markdownDescription": "Expand/collapse empty elements. Default is `ignore`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatemptyelements%22%7D%5D) for more information.",
+									"markdownDescription": "Expand/collapse empty elements. Default is `ignore`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatemptyelements%22%7D%5D) for more information."
 								},
 								"xml.format.enforceQuoteStyle": {
 									"type": "string",
@@ -102,32 +102,47 @@
 										"Ignore quote style formatting."
 									],
 									"default": "ignore",
-									"markdownDescription": "Enforce `preferred` quote style (set by `#xml.preferences.quoteStyle#`) or `ignore` quote style when formatting. Default is `ignore`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatenforcequotestyle%22%7D%5D) for more information.",
+									"markdownDescription": "Enforce `preferred` quote style (set by `#xml.preferences.quoteStyle#`) or `ignore` quote style when formatting. Default is `ignore`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatenforcequotestyle%22%7D%5D) for more information."
+								},
+								"xml.format.experimental": {
+									"type": "boolean",
+									"default": false,
+									"markdownDescription": "Enable/disable experimental formatter. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatexperimental%22%7D%5D) for more information."
+								},
+								"xml.format.grammarAwareFormatting": {
+									"type": "boolean",
+									"default": true,
+									"markdownDescription": "Use Schema/DTD grammar information while formatting. Default is `true`. Supported only with experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatgrammarawareformatting%22%7D%5D) for more information."
 								},
 								"xml.format.joinCDATALines": {
 									"type": "boolean",
 									"default": false,
-									"markdownDescription": "Set to `true` to join lines in CDATA content during formatting. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincdatalines%22%7D%5D) for more information.",
+									"markdownDescription": "Set to `true` to join lines in CDATA content during formatting. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincdatalines%22%7D%5D) for more information."
 								},
 								"xml.format.joinCommentLines": {
 									"type": "boolean",
 									"default": false,
-									"markdownDescription": "Join comment content on format. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincommentlines%22%7D%5D) for more information.",
+									"markdownDescription": "Join comment content on format. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincommentlines%22%7D%5D) for more information."
 								},
 								"xml.format.joinContentLines": {
 									"type": "boolean",
 									"default": false,
-									"markdownDescription": "Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincontentlines%22%7D%5D) for more information.",
+									"markdownDescription": "Normalize the whitespace of content inside an element. Newlines and excess whitespace are removed. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatjoincontentlines%22%7D%5D) for more information."
+								},
+								"xml.format.maxLineWidth": {
+									"type": "integer",
+									"default": 80,
+									"markdownDescription": "Max line width. Default is `80`. Supported only with experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatmaxlinewidth%22%7D%5D) for more information."
 								},
 								"xml.format.preserveAttributeLineBreaks": {
 									"type": "boolean",
 									"default": false,
-									"markdownDescription": "Preserve line breaks that appear before and after attributes. This setting is overridden if `#xml.format.splitAttributes#` is set to `true`. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreserveattributelinebreaks%22%7D%5D) for more information.",
+									"markdownDescription": "Preserve line breaks that appear before and after attributes. This setting is overridden if `#xml.format.splitAttributes#` is set to `true`. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreserveattributelinebreaks%22%7D%5D) for more information."
 								},
 								"xml.format.preserveEmptyContent": {
 									"type": "boolean",
 									"default": false,
-									"markdownDescription": "Preserve empty content/whitespace in a tag. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreserveemptycontent%22%7D%5D) for more information.",
+									"markdownDescription": "Preserve empty content/whitespace in a tag. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreserveemptycontent%22%7D%5D) for more information."
 								},
 								"xml.format.preservedNewlines": {
 									"type": "integer",
@@ -138,12 +153,30 @@
 										3
 									],
 									"default": 2,
-									"markdownDescription": "Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines. Default is `2`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreservednewlines%22%7D%5D) for more information.",
+									"markdownDescription": "Preserve new lines that separate tags. The value represents the maximum number of new lines per section. A value of 0 removes all new lines. Default is `2`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreservednewlines%22%7D%5D) for more information."
+								},
+								"xml.format.preserveSpace": {
+									"type": "array",
+									"default": [
+										"xsl:text",
+										"xsl:comment",
+										"xsl:processing-instruction",
+										"literallayout",
+										"programlisting",
+										"screen",
+										"synopsis",
+										"pre",
+										"xd:pre"
+									],
+									"items": {
+										"type": "string"
+									},
+									"markdownDescription": "Element names for which spaces will be preserved. Supported only with experimental formatter. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatpreservespace%22%7D%5D) for more information."
 								},
 								"xml.format.spaceBeforeEmptyCloseTag": {
 									"type": "boolean",
 									"default": true,
-									"markdownDescription": "Insert space before end of self closing tag. \nExample:\n  ```<tag/> -> <tag />```. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatspacebeforeemptyclosetag%22%7D%5D) for more information.",
+									"markdownDescription": "Insert space before end of self closing tag. \nExample:\n  ```<tag/> -> <tag />```. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatspacebeforeemptyclosetag%22%7D%5D) for more information."
 								},
 								"xml.format.xsiSchemaLocationSplit": {
 									"type": "string",
@@ -158,12 +191,12 @@
 										"Ignore `xsi:schemaLocation` content formatting."
 									],
 									"default": "none",
-									"markdownDescription": "Split `xsi:schemaLocation` content. Default is `none`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatxsischemalocationsplit%22%7D%5D) for more information",
+									"markdownDescription": "Split `xsi:schemaLocation` content. Default is `none`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatxsischemalocationsplit%22%7D%5D) for more information"
 								},
 								"xml.format.splitAttributes": {
 									"type": "boolean",
 									"default": false,
-									"markdownDescription": "Split multiple attributes each onto a new line. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatsplitattributes%22%7D%5D) for more information.",
+									"markdownDescription": "Split multiple attributes each onto a new line. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Formatting%22%2C%22section%22%3A%22xmlformatsplitattributes%22%7D%5D) for more information."
 								},
 								"xml.format.splitAttributesIndentSize": {
 									"type": "number",
@@ -182,17 +215,17 @@
 										"double"
 									],
 									"default": "double",
-									"markdownDescription": "Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`.",
+									"markdownDescription": "Preferred quote style to use for completion: `single` quotes, `double` quotes. Default is `double`."
 								},
 								"xml.completion.autoCloseTags": {
 									"type": "boolean",
 									"default": true,
-									"markdownDescription": "Enable/disable autoclosing of XML tags. Default is `true`. \n\nIMPORTANT: Turn off `#editor.autoClosingTags#` for this to work.",
+									"markdownDescription": "Enable/disable autoclosing of XML tags. Default is `true`. \n\nIMPORTANT: Turn off `#editor.autoClosingTags#` for this to work."
 								},
 								"xml.completion.autoCloseRemovesContent": {
 									"type": "boolean",
 									"default": true,
-									"markdownDescription": "Enable/disable the content of an element being removed when the element start tag is turned into a self-closing tag. The default setting is to remove the content. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22auto-close-removes-content%22%7D%5D) for more information.",
+									"markdownDescription": "Enable/disable the content of an element being removed when the element start tag is turned into a self-closing tag. The default setting is to remove the content. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22auto-close-removes-content%22%7D%5D) for more information."
 								},
 								"xml.codeLens.enabled": {
 									"type": "boolean",
@@ -214,12 +247,12 @@
 										"Documentation comes from the `xs:documentation` and `xs:appinfo` elements.",
 										"Displays no documentation."
 									],
-									"markdownDescription": "Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22documentation-type%22%7D%5D) for more information.",
+									"markdownDescription": "Specifies the source of the XML schema documentation displayed on hover and completion. Default is `all`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Preferences%22%2C%22section%22%3A%22documentation-type%22%7D%5D) for more information."
 								},
 								"xml.validation.enabled": {
 									"type": "boolean",
 									"default": true,
-									"markdownDescription": "Enable/disable all validation. Default is `true`.",
+									"markdownDescription": "Enable/disable all validation. Default is `true`."
 								},
 								"xml.validation.namespaces.enabled": {
 									"type": "string",
@@ -234,7 +267,7 @@
 										"Disable namespaces validation.",
 										"Enable namespaces validation only when the root element declares an xmlns namespace."
 									],
-									"markdownDescription": "Enable/disable namespaces validation. Default is `always`. Ignored if `#xml.validation.enabled#` is set to `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xmlnamespaceschemaenabled%22%7D%5D) for more information.",
+									"markdownDescription": "Enable/disable namespaces validation. Default is `always`. Ignored if `#xml.validation.enabled#` is set to `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xmlnamespaceschemaenabled%22%7D%5D) for more information."
 								},
 								"xml.validation.schema.enabled": {
 									"type": "string",
@@ -249,17 +282,17 @@
 										"Disable schema based validation.",
 										"Enable schema based validation only when the declared xsi:schemaLocation hint or xsi:noNamespaceSchemaLocation is valid for the root element."
 									],
-									"markdownDescription": "Enable/disable schema based validation. Default is `always`. Ignored if `#xml.validation.enabled#` is set to `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xmlvalidationschemaenabled%22%7D%5D) for more information.",
+									"markdownDescription": "Enable/disable schema based validation. Default is `always`. Ignored if `#xml.validation.enabled#` is set to `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22xmlvalidationschemaenabled%22%7D%5D) for more information."
 								},
 								"xml.validation.disallowDocTypeDecl": {
 									"type": "boolean",
 									"default": false,
-									"markdownDescription": "Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22disallow-doc-type-declarations%22%7D%5D) for more information",
+									"markdownDescription": "Enable/disable if a fatal error is thrown if the incoming document contains a DOCTYPE declaration. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22disallow-doc-type-declarations%22%7D%5D) for more information"
 								},
 								"xml.validation.resolveExternalEntities": {
 									"type": "boolean",
 									"default": false,
-									"markdownDescription": "Enable/disable resolve of external entities. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22resolve-external-entities%22%7D%5D) for more information. Disabled for untrusted workspaces",
+									"markdownDescription": "Enable/disable resolve of external entities. Default is `false`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Validation%22%2C%22section%22%3A%22resolve-external-entities%22%7D%5D) for more information. Disabled for untrusted workspaces"
 								},
 								"xml.validation.noGrammar": {
 									"type": "string",
@@ -271,12 +304,12 @@
 										"error"
 									],
 									"default": "hint",
-									"markdownDescription": "The message severity when a document has no associated grammar. Default is `hint`.",
+									"markdownDescription": "The message severity when a document has no associated grammar. Default is `hint`."
 								},
 								"xml.symbols.enabled": {
 									"type": "boolean",
 									"default": true,
-									"markdownDescription": "Enable/disable document symbols (Outline). Default is `true`. No symbols are given if `\"xml.symbols.enabled\": false`.",
+									"markdownDescription": "Enable/disable document symbols (Outline). Default is `true`. No symbols are given if `\"xml.symbols.enabled\": false`."
 								},
 								"xml.symbols.excluded": {
 									"type": "array",
@@ -284,7 +317,7 @@
 									"items": {
 										"type": "string"
 									},
-									"markdownDescription": "Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.\n\nExample:\n```\n[\n \"**/*LargeFile.xml\"\n]```.",
+									"markdownDescription": "Disable document symbols (Outline) for the given file name patterns. Updating file name patterns does not automatically reload the Outline view for the relevant file(s). Each file must either be reopened or changed, in order to trigger an Outline view reload.\n\nExample:\n```\n[\n \"**/*LargeFile.xml\"\n]```."
 								},
 								"xml.symbols.maxItemsComputed": {
 									"type": "integer",
@@ -294,7 +327,7 @@
 								"xml.symbols.showReferencedGrammars": {
 									"type": "boolean",
 									"default": true,
-									"markdownDescription": "Show referenced grammars in the Outline. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22xmlsymbolsshowreferencedgrammars%22%7D%5D) for more information.",
+									"markdownDescription": "Show referenced grammars in the Outline. Default is `true`. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22xmlsymbolsshowreferencedgrammars%22%7D%5D) for more information."
 								},
 								"xml.symbols.filters": {
 									"type": "array",
@@ -331,7 +364,7 @@
 											"expressions"
 										]
 									},
-									"markdownDescription": "Allows XML symbols filter to be associated to file name patterns. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22xmlsymbolsfilters%22%7D%5D) for more information.. \n\nExample:\n```json\n[\n  {\n    \"pattern\": \"pom.xml\",\n    \"expressions\": [\n      {\n        \"xpath\": \"//text()\"\n      }\n    ]\n  }\n]\n```",
+									"markdownDescription": "Allows XML symbols filter to be associated to file name patterns. See [here](command:xml.open.docs?%5B%7B%22page%22%3A%22Symbols%22%2C%22section%22%3A%22xmlsymbolsfilters%22%7D%5D) for more information.. \n\nExample:\n```json\n[\n  {\n    \"pattern\": \"pom.xml\",\n    \"expressions\": [\n      {\n        \"xpath\": \"//text()\"\n      }\n    ]\n  }\n]\n```"
 								}
 							}
 						}
