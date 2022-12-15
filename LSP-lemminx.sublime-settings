@@ -42,6 +42,7 @@
 
 	"initializationOptions": {
 		"settings": {
+			"xml.extension.jars": [],
 			"xml.logs.client": true,
 			"xml.logs.file": "$storage_path/lemminx.log",
 			"xml.trace.server": "off",
@@ -67,7 +68,7 @@
 		"xml.completion.autoCloseRemovesContent": true,
 
 		"xml.format.enabled": true,
-		"xml.format.experimental": false,
+		"xml.format.legacy": false,
 		"xml.format.closingBracketNewLine": false,
 		"xml.format.emptyElements": "ignore",
 		"xml.format.enforceQuoteStyle": "ignore",
@@ -76,22 +77,32 @@
 		"xml.format.joinCDATALines": false,
 		"xml.format.joinCommentLines": false,
 		"xml.format.joinContentLines": false,
-		"xml.format.maxLineWidth": 80,
-		"xml.format.preserveAttributeLineBreaks": false,
+		"xml.format.maxLineWidth": 100,
+		"xml.format.preserveAttributeLineBreaks": true,
 		"xml.format.preservedNewlines": 2,
 		"xml.format.preserveEmptyContent": false,
-		"xml.format.preserveSpace": false,
-		"xml.format.spaceBeforeEmptyCloseTag": false,
+		"xml.format.preserveSpace": [
+			"xsl:text",
+			"xsl:comment",
+			"xsl:processing-instruction",
+			"literallayout",
+			"programlisting",
+			"screen",
+			"synopsis",
+			"pre",
+			"xd:pre"
+		],
+		"xml.format.spaceBeforeEmptyCloseTag": true,
 		"xml.format.splitAttributes": false,
 		"xml.format.splitAttributesIndentSize": 2,
 		"xml.format.trimFinalNewlines": false,
 		"xml.format.trimTrailingWhitespace": false,
-		"xml.format.xsiSchemaLocationSplit": "none",
+		"xml.format.xsiSchemaLocationSplit": "onPair",
 
 		"xml.preferences.quoteStyle": "double",
 		"xml.preferences.showSchemaDocumentationType": "all",
 
-		"xml.symbols.enabled": true,
+		"xml.symbols.enabled": false,
 		"xml.symbols.excluded": [],
 		"xml.symbols.filters": [],
 		"xml.symbols.maxItemsComputed": 5000,
@@ -99,9 +110,18 @@
 
 		"xml.validation.enabled": true,
 		"xml.validation.disallowDocTypeDecl": false,
+		"xml.validation.filters": [
+			{
+				"pattern": "**.exsd"
+			},
+			{
+				"pattern": "**{.project,.classpath,plugin.xml,feature.xml,category.xml,.target,.product}"
+			}
+		],
 		"xml.validation.namespaces.enabled": "always",
 		"xml.validation.noGrammar": "hint",
 		"xml.validation.resolveExternalEntities": true,
 		"xml.validation.schema.enabled": "always",
+		"xml.validation.xInclude.enabled": false,
 	}
 }
