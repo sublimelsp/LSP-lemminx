@@ -9,8 +9,8 @@ from sublime_lib import ActivityIndicator
 
 from LSP.plugin import ClientConfig, LanguageHandler, read_client_config
 
-SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.22.0/org.eclipse.lemminx-0.22.0-uber.jar"
-SERVER_SHA256 = "6eb6e37115f5bd6d4cd86e72124b698d8ebbbf192ca37c3b3ac494a5f40b0c4e"
+SERVER_URL = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/0.23.1/org.eclipse.lemminx-0.23.1-uber.jar"
+SERVER_SHA256 = "a77460b30c61c07af11153f10b6bca86b6b3b5c38081bdd2ad519d4aca53c06a"
 
 
 def is_java_installed() -> bool:
