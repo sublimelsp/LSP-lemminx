@@ -417,6 +417,97 @@
 									},
 									"markdownDescription": "Allows XML symbols filter to be associated to file name patterns.",
 								},
+								"xml.references": {
+									"type": "array",
+									"default": [],
+									"items": {
+										"type": "object",
+										"properties": {
+											"pattern": {
+												"type": "string",
+												"markdownDescription": "matches the files that reference declared with `expressions` applies to.\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
+											},
+											"prefix": {
+												"type": "string",
+												"description": "The prefix to use (ex : '#')  for from for all the declared reference expressions."
+											},
+											"multiple": {
+												"type": "boolean",
+												"description": "true if the from attribute, text can declare several from references and false otherwise for all the declared reference expressions."
+											},
+											"expressions": {
+												"type": "array",
+												"default": [],
+												"items": {
+													"type": "object",
+													"properties": {
+														"prefix": {
+															"type": "string",
+															"description": "The prefix to use (ex : '#')  for from."
+														},
+														"multiple": {
+															"type": "boolean",
+															"description": "true if the from attribute, text can declare several from references and false otherwise."
+														},
+														"from": {
+															"type": "string",
+															"description": "The from reference DOM node (attribute, text) declared with XPath (ex: foo/@attr, foo/text())."
+														},
+														"to": {
+															"type": "string",
+															"description": "The to reference DOM node (attribute, text) declared with XPath (ex: foo/@attr, foo/text())."
+														}
+													}
+												},
+												"required": [
+													"from",
+													"to"
+												]
+											}
+										},
+										"required": [
+											"pattern",
+											"expressions"
+										]
+									},
+									"markdownDescription": "Allows references for the given file name patterns.",
+									"scope": "window"
+								},
+								"xml.colors": {
+									"type": "array",
+									"default": [],
+									"items": {
+										"type": "object",
+										"properties": {
+											"pattern": {
+												"type": "string",
+												"markdownDescription": "matches the files that colors declared with `expressions` applies to.\n\nMore information on the glob syntax: https://docs.oracle.com/javase/tutorial/essential/io/fileOps.html#glob"
+											},
+											"expressions": {
+												"type": "array",
+												"default": [],
+												"items": {
+													"type": "object",
+													"properties": {
+														"xpath": {
+															"type": "string",
+															"description": "The color DOM node (attribute, text) declared with XPath (ex: foo/@color, foo/text())"
+														}
+													}
+												},
+												"required": [
+													"xpath"
+												]
+											}
+										},
+										"required": [
+											"pattern",
+											"expressions"
+										]
+									},
+									"markdownDescription": "Allows colors for the given file name patterns.",
+									"scope": "window"
+								},
 								"xml.extension.jars": {
 									"type": "array",
 									"default": [],

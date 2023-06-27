@@ -102,6 +102,9 @@
 		"xml.preferences.quoteStyle": "double",
 		"xml.preferences.showSchemaDocumentationType": "all",
 
+		"xml.colors": [],
+		"xml.references": [],
+
 		"xml.symbols.enabled": false,
 		"xml.symbols.excluded": [],
 		"xml.symbols.filters": [],
