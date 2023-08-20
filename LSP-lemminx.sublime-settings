@@ -107,7 +107,7 @@
 			"xd:pre"
 		],
 		"xml.format.spaceBeforeEmptyCloseTag": true,
-		"xml.format.splitAttributes": false,
+		"xml.format.splitAttributes": "preserve",
 		"xml.format.splitAttributesIndentSize": 2,
 		"xml.format.trimFinalNewlines": false,
 		"xml.format.trimTrailingWhitespace": false,
