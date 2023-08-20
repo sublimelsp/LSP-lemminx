@@ -8,7 +8,6 @@ import zipfile
 
 from http.client import HTTPException
 from urllib.request import urlretrieve, urlopen
-from typing import Tuple, Union
 
 from LSP.plugin import (
     AbstractPlugin,
@@ -28,7 +27,7 @@ class BaseServerHandler:
 
     __slots__ = ["dest_checksum", "dest_version"]
 
-    def needs_update_or_installation(self) -> bool:
+    def needs_update_or_installation(self):
         self.dest_version = LemminxPlugin.settings().get("server_version", "latest")
 
         next_run, version, checksum = self.load_metadata()
@@ -58,21 +57,21 @@ class BaseServerHandler:
 
         return True
 
-    def download_checksum(self) -> str:
+    def download_checksum(self):
         """
         Build and return platform specific download url.
         """
         raise NotImplementedError()
 
     @staticmethod
-    def server_binary() -> str:
+    def server_binary():
         """
         Build and return absolute path to installed language server binary.
         """
         raise NotImplementedError()
 
     @staticmethod
-    def metadata_file() -> str:
+    def metadata_file():
         """
         Build and return absolute path to meta data file
         storing language server's version and checksum.
@@ -80,7 +79,7 @@ class BaseServerHandler:
         raise NotImplementedError()
 
     @classmethod
-    def load_metadata(cls) -> Tuple[int, str, str]:
+    def load_metadata(cls):
         try:
             with open(cls.metadata_file()) as fobj:
                 data = json.load(fobj)
@@ -89,7 +88,7 @@ class BaseServerHandler:
             return (0, "", "")
 
     @classmethod
-    def save_metadata(cls, success: bool, version: str, checksum: str) -> None:
+    def save_metadata(cls, success, version, checksum):
         next_run_delay = (7 * 24 * 60 * 60) if success else (6 * 60 * 60)
         with open(cls.metadata_file(), "w") as fobj:
             json.dump({
@@ -124,7 +123,7 @@ class BinaryServerHandler(BaseServerHandler):
 
     # API methods
 
-    def install_or_update(self) -> None:
+    def install_or_update(self):
         if not self.dest_checksum or not self.dest_version:
             raise RuntimeError()
 
@@ -158,7 +157,7 @@ class BinaryServerHandler(BaseServerHandler):
 
     # server specific methods
 
-    def download_checksum(self) -> str:
+    def download_checksum(self):
         # download checksum file
         response = urlopen(self.make_url(self.dest_version, "sha256"), timeout=2.0).read().decode("utf-8")
 
@@ -170,7 +169,7 @@ class BinaryServerHandler(BaseServerHandler):
         return match.group(1).lower()
 
     @staticmethod
-    def make_url(version: str, ext: str) -> str:
+    def make_url(version, ext):
         name = {
             "linux": "lemminx-linux",
             "osx": "lemminx-osx-x86_64",
@@ -180,11 +179,11 @@ class BinaryServerHandler(BaseServerHandler):
         return pattern.format(version, name[sublime.platform()], ext)
 
     @staticmethod
-    def metadata_file() -> str:
+    def metadata_file():
         return os.path.join(LemminxPlugin.server_dir(), "binary_server.json")
 
     @staticmethod
-    def server_binary() -> str:
+    def server_binary():
         name = {
             "linux": "lemminx-linux",
             "osx": "lemminx-osx-x86_64",
@@ -217,7 +216,7 @@ class JavaServerHandler(BaseServerHandler):
 
     # API methods
 
-    def install_or_update(self) -> None:
+    def install_or_update(self):
         if not self.dest_checksum or not self.dest_version:
             raise RuntimeError()
 
@@ -245,7 +244,7 @@ class JavaServerHandler(BaseServerHandler):
 
     # server specific methods
 
-    def download_checksum(self) -> str:
+    def download_checksum(self):
         # download checksum file
         response = urlopen(self.make_url(self.dest_version, "jar.sha1"), timeout=2.0).read().decode("utf-8")
 
@@ -257,7 +256,7 @@ class JavaServerHandler(BaseServerHandler):
         return match.group(1).lower()
 
     @staticmethod
-    def make_url(version: str, ext: str) -> str:
+    def make_url(version, ext):
         base_url = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx"
 
         if version == "latest":
@@ -273,11 +272,11 @@ class JavaServerHandler(BaseServerHandler):
         return "{0}/{1}/org.eclipse.lemminx-{1}-uber.{2}".format(base_url, version, ext)
 
     @staticmethod
-    def metadata_file() -> str:
+    def metadata_file():
         return os.path.join(LemminxPlugin.server_dir(), "java_server.json")
 
     @staticmethod
-    def server_binary() -> str:
+    def server_binary():
         return os.path.join(LemminxPlugin.server_dir(), "lemminx.jar")
 
 
@@ -349,7 +348,7 @@ class LemminxPlugin(AbstractPlugin):
     # LemMinX specific methods
 
     @classmethod
-    def server(cls) -> Union[BinaryServerHandler, JavaServerHandler]:
+    def server(cls):
         if cls._server is None:
             if (
                 cls.settings().get("server_binary", True)
@@ -362,7 +361,7 @@ class LemminxPlugin(AbstractPlugin):
         return cls._server
 
     @classmethod
-    def settings(cls) -> sublime.Settings:
+    def settings(cls):
         if cls._settings is None:
             cls._settings = sublime.load_settings(cls.settings_name)
         return cls._settings
