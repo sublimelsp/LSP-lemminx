@@ -1,3 +1,4 @@
+from __future__ import annotations
 import hashlib
 import json
 import os
@@ -11,6 +12,9 @@ from urllib.request import urlretrieve, urlopen
 
 from LSP.plugin import (
     AbstractPlugin,
+    ClientConfig,
+    DottedDict,
+    WorkspaceFolder,
     register_plugin,
     filename_to_uri,
     unregister_plugin,
@@ -24,7 +28,7 @@ class BaseServerHandler:
     dest_version: str = ""
 
     @classmethod
-    def needs_update_or_installation(cls):
+    def needs_update_or_installation(cls) -> bool:
         cls.dest_version = str(LemminxPlugin.settings.get("server_version", "latest"))
 
         next_run, version, checksum = cls.load_metadata()
@@ -55,21 +59,21 @@ class BaseServerHandler:
         return True
 
     @classmethod
-    def download_checksum(cls):
+    def download_checksum(cls) -> str:
         """
         Build and return platform specific download url.
         """
         raise NotImplementedError()
 
     @staticmethod
-    def server_binary():
+    def server_binary() -> str:
         """
         Build and return absolute path to installed language server binary.
         """
         raise NotImplementedError()
 
     @staticmethod
-    def metadata_file():
+    def metadata_file() -> str:
         """
         Build and return absolute path to meta data file
         storing language server's version and checksum.
@@ -77,7 +81,7 @@ class BaseServerHandler:
         raise NotImplementedError()
 
     @classmethod
-    def load_metadata(cls):
+    def load_metadata(cls) -> tuple[int, str, str]:
         try:
             with open(cls.metadata_file()) as fobj:
                 data = json.load(fobj)
@@ -86,7 +90,7 @@ class BaseServerHandler:
             return (0, "", "")
 
     @classmethod
-    def save_metadata(cls, success, version, checksum):
+    def save_metadata(cls, success: bool, version: str, checksum: str) -> None:
         next_run_delay = (7 * 24 * 60 * 60) if success else (6 * 60 * 60)
         with open(cls.metadata_file(), "w") as fobj:
             json.dump(
@@ -125,7 +129,7 @@ class BinaryServerHandler(BaseServerHandler):
     # API methods
 
     @classmethod
-    def install_or_update(cls):
+    def install_or_update(cls) -> None:
         if not cls.dest_checksum or not cls.dest_version:
             raise RuntimeError()
 
@@ -150,7 +154,13 @@ class BinaryServerHandler(BaseServerHandler):
         cls.save_metadata(True, cls.dest_version, cls.dest_checksum)
 
     @classmethod
-    def on_pre_start(cls, window, initiating_view, workspace_folders, configuration):
+    def can_start(
+        cls,
+        window: sublime.Window,
+        initiating_view: sublime.View,
+        workspace_folders: list[WorkspaceFolder],
+        configuration: ClientConfig,
+    ) -> str | None:
         configuration.command = [cls.server_binary()]
         additional_args = LemminxPlugin.settings.get("server_binary_args", [])
         if additional_args:
@@ -159,7 +169,7 @@ class BinaryServerHandler(BaseServerHandler):
     # server specific methods
 
     @classmethod
-    def download_checksum(cls):
+    def download_checksum(cls) -> str:
         # download checksum file
         response = (
             urlopen(cls.make_url(cls.dest_version, "sha256"), timeout=2.0).read().decode("utf-8")
@@ -173,7 +183,7 @@ class BinaryServerHandler(BaseServerHandler):
         return match.group(1).lower()
 
     @staticmethod
-    def make_url(version, ext):
+    def make_url(version: str, ext: str) -> str:
         name = {
             "linux": "lemminx-linux",
             "osx": "lemminx-osx-x86_64",
@@ -183,11 +193,11 @@ class BinaryServerHandler(BaseServerHandler):
         return pattern.format(version, name[sublime.platform()], ext)
 
     @staticmethod
-    def metadata_file():
+    def metadata_file() -> str:
         return os.path.join(LemminxPlugin.server_path(), "binary_server.json")
 
     @staticmethod
-    def server_binary():
+    def server_binary() -> str:
         name = {
             "linux": "lemminx-linux",
             "osx": "lemminx-osx-x86_64",
@@ -221,7 +231,7 @@ class JavaServerHandler(BaseServerHandler):
     # API methods
 
     @classmethod
-    def install_or_update(cls):
+    def install_or_update(cls) -> None:
         if not cls.dest_checksum or not cls.dest_version:
             raise RuntimeError()
 
@@ -240,7 +250,13 @@ class JavaServerHandler(BaseServerHandler):
         cls.save_metadata(True, cls.dest_version, cls.dest_checksum)
 
     @classmethod
-    def on_pre_start(cls, window, initiating_view, workspace_folders, configuration):
+    def can_start(
+        cls,
+        window: sublime.Window,
+        initiating_view: sublime.View,
+        workspace_folders: list[WorkspaceFolder],
+        configuration: ClientConfig,
+    ) -> str | None:
         configuration.command = ["java", "-jar", cls.server_binary()]
         additional_args = LemminxPlugin.settings.get("java_vmargs", [])
         if additional_args:
@@ -249,7 +265,7 @@ class JavaServerHandler(BaseServerHandler):
     # server specific methods
 
     @classmethod
-    def download_checksum(cls):
+    def download_checksum(cls) -> str:
         # download checksum file
         response = (
             urlopen(cls.make_url(cls.dest_version, "jar.sha1"), timeout=2.0)
@@ -265,7 +281,7 @@ class JavaServerHandler(BaseServerHandler):
         return match.group(1).lower()
 
     @staticmethod
-    def make_url(version, ext):
+    def make_url(version: str, ext: str) -> str:
         base_url = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx"
 
         if version == "latest":
@@ -281,17 +297,17 @@ class JavaServerHandler(BaseServerHandler):
         return "{0}/{1}/org.eclipse.lemminx-{1}-uber.{2}".format(base_url, version, ext)
 
     @staticmethod
-    def metadata_file():
+    def metadata_file() -> str:
         return os.path.join(LemminxPlugin.server_path(), "java_server.json")
 
     @staticmethod
-    def server_binary():
+    def server_binary() -> str:
         return os.path.join(LemminxPlugin.server_path(), "lemminx.jar")
 
 
 class LemminxPlugin(AbstractPlugin):
 
-    file_associations = [
+    file_associations: list[dict[str, str]] = [
         {
             "pattern": "**/*.sublime-snippet",
             "systemId": "$storage_uri/cache/sublime/sublime-snippet.xsd",
@@ -328,35 +344,41 @@ class LemminxPlugin(AbstractPlugin):
     Package settings
     """
 
-    _server = None
+    _server: type[BinaryServerHandler] | type[JavaServerHandler] | None = None
 
     # LSP API methods
 
     @classmethod
-    def name(cls):
+    def name(cls) -> str:
         return "LemMinX"
 
     @classmethod
-    def configuration(cls):
+    def configuration(cls) -> tuple[sublime.Settings, str]:
         settings_file_name = "LSP-lemminx.sublime-settings"
         cls.settings = sublime.load_settings(settings_file_name)
         return cls.settings, f"Packages/{cls.package_name}/{settings_file_name}"
 
     @classmethod
-    def needs_update_or_installation(cls):
+    def needs_update_or_installation(cls) -> bool:
         return cls.server().needs_update_or_installation()
 
     @classmethod
-    def install_or_update(cls):
+    def install_or_update(cls) -> None:
         os.makedirs(cls.server_path(), exist_ok=True)
         cls.server().install_or_update()
 
     @classmethod
-    def on_pre_start(cls, window, initiating_view, workspace_folders, configuration):
-        cls.server().on_pre_start(window, initiating_view, workspace_folders, configuration)
+    def can_start(
+        cls,
+        window: sublime.Window,
+        initiating_view: sublime.View,
+        workspace_folders: list[WorkspaceFolder],
+        configuration: ClientConfig,
+    ) -> str | None:
+        cls.server().can_start(window, initiating_view, workspace_folders, configuration)
 
     @classmethod
-    def on_settings_changed(cls, dotted):
+    def on_settings_changed(cls, dotted: DottedDict) -> None:
         # invalidate server object
         cls._server = None
         # prepend a list of fixed file associations
@@ -370,7 +392,7 @@ class LemminxPlugin(AbstractPlugin):
     # LemMinX specific methods
 
     @classmethod
-    def server(cls):
+    def server(cls) -> type[BinaryServerHandler] | type[JavaServerHandler]:
         if cls._server is None:
             if (
                 cls.settings.get("server_binary", True)
@@ -383,7 +405,7 @@ class LemminxPlugin(AbstractPlugin):
         return cls._server
 
     @classmethod
-    def additional_variables(cls):
+    def additional_variables(cls) -> dict[str, str]:
         return {
             "package_path": cls.package_path(),
             "storage_path": cls.server_path(),
@@ -394,7 +416,7 @@ class LemminxPlugin(AbstractPlugin):
     # internal methods
 
     @classmethod
-    def cleanup(cls):
+    def cleanup(cls) -> None:
         try:
             from package_control import events  # type: ignore
 
@@ -404,7 +426,7 @@ class LemminxPlugin(AbstractPlugin):
             pass  # Package Control is not required.
 
     @classmethod
-    def remove_server_dir(cls):
+    def remove_server_dir(cls) -> None:
         from shutil import rmtree
 
         server_path = cls.server_path()
@@ -418,23 +440,23 @@ class LemminxPlugin(AbstractPlugin):
         rmtree(server_path, ignore_errors=True)
 
     @classmethod
-    def package_path(cls):
+    def package_path(cls) -> str:
         return os.path.join(sublime.packages_path(), cls.package_name)
 
     @classmethod
-    def package_uri(cls):
+    def package_uri(cls) -> str:
         return filename_to_uri(cls.package_path())
 
     @classmethod
-    def server_path(cls):
+    def server_path(cls) -> str:
         return os.path.join(cls.storage_path(), cls.package_name)
 
     @classmethod
-    def server_uri(cls):
+    def server_uri(cls) -> str:
         return filename_to_uri(cls.server_path())
 
     @classmethod
-    def install_schemas(cls):
+    def install_schemas(cls) -> None:
         """
         Extract scheme files from sublime-package file.
 
@@ -458,7 +480,7 @@ class LemminxPlugin(AbstractPlugin):
                 shutil.copy(os.path.join(src_path, f), dest_path)
 
 
-def plugin_loaded():
+def plugin_loaded() -> None:
     try:
         LemminxPlugin.install_schemas()
     except OSError:
@@ -467,6 +489,6 @@ def plugin_loaded():
     register_plugin(LemminxPlugin)
 
 
-def plugin_unloaded():
+def plugin_unloaded() -> None:
     LemminxPlugin.cleanup()
     unregister_plugin(LemminxPlugin)
