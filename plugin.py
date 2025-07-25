@@ -28,7 +28,7 @@ class BaseServerHandler:
     __slots__ = ["dest_checksum", "dest_version"]
 
     def needs_update_or_installation(self):
-        self.dest_version = LemminxPlugin.settings().get("server_version", "latest")
+        self.dest_version = LemminxPlugin.settings.get("server_version", "latest")
 
         next_run, version, checksum = self.load_metadata()
         is_upgrade = os.path.isfile(self.server_binary())
@@ -151,7 +151,7 @@ class BinaryServerHandler(BaseServerHandler):
         configuration.command = [
             self.server_binary()
         ]
-        additional_args = LemminxPlugin.settings().get("server_binary_args", [])
+        additional_args = LemminxPlugin.settings.get("server_binary_args", [])
         if additional_args:
             configuration.command.extend(additional_args)
 
@@ -238,7 +238,7 @@ class JavaServerHandler(BaseServerHandler):
         configuration.command = [
             "java", "-jar", self.server_binary()
         ]
-        additional_args = LemminxPlugin.settings().get("java_vmargs", [])
+        additional_args = LemminxPlugin.settings.get("java_vmargs", [])
         if additional_args:
             configuration.command.extend(additional_args)
 
@@ -305,9 +305,11 @@ class LemminxPlugin(AbstractPlugin):
         }
     ]
 
-    settings_name = "LSP-lemminx.sublime-settings"
-    settings_resource_path = "Packages/{}/{}".format(__package__, settings_name)
-    _settings = None
+    settings: sublime.Settings
+    """
+    Package settings
+    """
+
     _server = None
 
     # LSP API methods
@@ -318,7 +320,9 @@ class LemminxPlugin(AbstractPlugin):
 
     @classmethod
     def configuration(cls):
-        return (cls.settings(), cls.settings_resource_path)
+        settings_file_name = "LSP-lemminx.sublime-settings"
+        cls.settings = sublime.load_settings(settings_file_name)
+        return cls.settings, f"Packages/{cls.package_name}/{settings_file_name}"
 
     @classmethod
     def needs_update_or_installation(cls):
@@ -351,7 +355,7 @@ class LemminxPlugin(AbstractPlugin):
     def server(cls):
         if cls._server is None:
             if (
-                cls.settings().get("server_binary", True)
+                cls.settings.get("server_binary", True)
                 and sublime.platform() in ("linux", "osx", "windows")
                 and sublime.arch() == "x64"
             ):
@@ -359,12 +363,6 @@ class LemminxPlugin(AbstractPlugin):
             else:
                 cls._server = JavaServerHandler()
         return cls._server
-
-    @classmethod
-    def settings(cls):
-        if cls._settings is None:
-            cls._settings = sublime.load_settings(cls.settings_name)
-        return cls._settings
 
     @classmethod
     def additional_variables(cls):
