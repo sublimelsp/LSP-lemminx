@@ -385,6 +385,30 @@ class LemminxPlugin(AbstractPlugin):
     # internal methods
 
     @classmethod
+    def cleanup(cls):
+        try:
+            from package_control import events  # type: ignore
+
+            if events.remove(cls.package_name):
+                sublime.set_timeout_async(cls.remove_server_path, 1000)
+        except ImportError:
+            pass  # Package Control is not required.
+
+    @classmethod
+    def remove_server_path(cls):
+        from shutil import rmtree
+
+        server_path = cls.server_dir()
+        # Enable long path support on on Windows
+        # to avoid errors when cleaning up paths with more than 256 chars.
+        # see: https://stackoverflow.com/a/14076169/4643765
+        # see: https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
+        if sublime.platform() == "windows":
+            server_path = Rf"\\?\{server_path}"
+
+        rmtree(server_path, ignore_errors=True)
+
+    @classmethod
     def package_dir(cls):
         return os.path.join(sublime.packages_path(), cls.package_name)
 
@@ -434,4 +458,5 @@ def plugin_loaded():
 
 
 def plugin_unloaded():
+    LemminxPlugin.cleanup()
     unregister_plugin(LemminxPlugin)
