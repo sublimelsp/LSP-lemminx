@@ -20,40 +20,42 @@ __all__ = ["LemminxPlugin", "plugin_loaded", "plugin_unloaded"]
 
 
 class BaseServerHandler:
+    dest_checksum: str = ""
+    dest_version: str = ""
 
-    __slots__ = ["dest_checksum", "dest_version"]
+    @classmethod
+    def needs_update_or_installation(cls):
+        cls.dest_version = str(LemminxPlugin.settings.get("server_version", "latest"))
 
-    def needs_update_or_installation(self):
-        self.dest_version = LemminxPlugin.settings.get("server_version", "latest")
-
-        next_run, version, checksum = self.load_metadata()
-        is_upgrade = os.path.isfile(self.server_binary())
+        next_run, version, checksum = cls.load_metadata()
+        is_upgrade = os.path.isfile(cls.server_binary())
 
         if (
             is_upgrade
-            and self.dest_version == version
-            and (self.dest_version != "latest" or int(time.time()) < next_run)
+            and cls.dest_version == version
+            and (cls.dest_version != "latest" or int(time.time()) < next_run)
         ):
             return False
 
         try:
-            self.dest_checksum = self.download_checksum()
+            cls.dest_checksum = cls.download_checksum()
         except (HTTPException, OSError, ValueError) as e:
             # downloading or parsing checksum failed
             if is_upgrade:
-                self.save_metadata(False, version, checksum)
+                cls.save_metadata(False, version, checksum)
                 print("LSP-lemminx: Update check failed - " + str(e))
                 return False
             raise
 
-        if self.dest_checksum == checksum:
+        if cls.dest_checksum == checksum:
             # installed binary up to date
-            self.save_metadata(True, version, checksum)
+            cls.save_metadata(True, version, checksum)
             return False
 
         return True
 
-    def download_checksum(self):
+    @classmethod
+    def download_checksum(cls):
         """
         Build and return platform specific download url.
         """
@@ -122,15 +124,16 @@ class BinaryServerHandler(BaseServerHandler):
 
     # API methods
 
-    def install_or_update(self):
-        if not self.dest_checksum or not self.dest_version:
+    @classmethod
+    def install_or_update(cls):
+        if not cls.dest_checksum or not cls.dest_version:
             raise RuntimeError()
 
-        server_binary = self.server_binary()
+        server_binary = cls.server_binary()
         server_path, server_name = os.path.split(server_binary)
 
         # downlad and unzip server binary (ignore any other files)
-        path, _ = urlretrieve(self.make_url(self.dest_version, "zip"))
+        path, _ = urlretrieve(cls.make_url(cls.dest_version, "zip"))
         with zipfile.ZipFile(path) as zf:
             zf.extract(server_name, server_path)
         os.remove(path)
@@ -139,25 +142,27 @@ class BinaryServerHandler(BaseServerHandler):
         checksum = ""
         with open(server_binary, "rb") as fobj:
             checksum = hashlib.sha256(fobj.read()).hexdigest().lower()
-        if checksum != self.dest_checksum:
+        if checksum != cls.dest_checksum:
             os.remove(server_binary)
             raise ValueError("Validating server binary failed!")
 
         # write update cookie
-        self.save_metadata(True, self.dest_version, self.dest_checksum)
+        cls.save_metadata(True, cls.dest_version, cls.dest_checksum)
 
-    def on_pre_start(self, window, initiating_view, workspace_folders, configuration):
-        configuration.command = [self.server_binary()]
+    @classmethod
+    def on_pre_start(cls, window, initiating_view, workspace_folders, configuration):
+        configuration.command = [cls.server_binary()]
         additional_args = LemminxPlugin.settings.get("server_binary_args", [])
         if additional_args:
             configuration.command.extend(additional_args)
 
     # server specific methods
 
-    def download_checksum(self):
+    @classmethod
+    def download_checksum(cls):
         # download checksum file
         response = (
-            urlopen(self.make_url(self.dest_version, "sha256"), timeout=2.0).read().decode("utf-8")
+            urlopen(cls.make_url(cls.dest_version, "sha256"), timeout=2.0).read().decode("utf-8")
         )
 
         # parse checksum file
@@ -215,36 +220,39 @@ class JavaServerHandler(BaseServerHandler):
 
     # API methods
 
-    def install_or_update(self):
-        if not self.dest_checksum or not self.dest_version:
+    @classmethod
+    def install_or_update(cls):
+        if not cls.dest_checksum or not cls.dest_version:
             raise RuntimeError()
 
-        server_binary = self.server_binary()
+        server_binary = cls.server_binary()
 
-        urlretrieve(self.make_url(self.dest_version, "jar"), server_binary)
+        urlretrieve(cls.make_url(cls.dest_version, "jar"), server_binary)
 
         checksum = ""
         with open(server_binary, "rb") as fobj:
             checksum = hashlib.sha1(fobj.read()).hexdigest().lower()
-        if checksum != self.dest_checksum:
+        if checksum != cls.dest_checksum:
             os.remove(server_binary)
             raise ValueError("Validating server binary failed!")
 
         # write update cookie
-        self.save_metadata(True, self.dest_version, self.dest_checksum)
+        cls.save_metadata(True, cls.dest_version, cls.dest_checksum)
 
-    def on_pre_start(self, window, initiating_view, workspace_folders, configuration):
-        configuration.command = ["java", "-jar", self.server_binary()]
+    @classmethod
+    def on_pre_start(cls, window, initiating_view, workspace_folders, configuration):
+        configuration.command = ["java", "-jar", cls.server_binary()]
         additional_args = LemminxPlugin.settings.get("java_vmargs", [])
         if additional_args:
             configuration.command.extend(additional_args)
 
     # server specific methods
 
-    def download_checksum(self):
+    @classmethod
+    def download_checksum(cls):
         # download checksum file
         response = (
-            urlopen(self.make_url(self.dest_version, "jar.sha1"), timeout=2.0)
+            urlopen(cls.make_url(cls.dest_version, "jar.sha1"), timeout=2.0)
             .read()
             .decode("utf-8")
         )
@@ -369,9 +377,9 @@ class LemminxPlugin(AbstractPlugin):
                 and sublime.platform() in ("linux", "osx", "windows")
                 and sublime.arch() == "x64"
             ):
-                cls._server = BinaryServerHandler()
+                cls._server = BinaryServerHandler
             else:
-                cls._server = JavaServerHandler()
+                cls._server = JavaServerHandler
         return cls._server
 
     @classmethod
