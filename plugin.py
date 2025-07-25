@@ -16,11 +16,7 @@ from LSP.plugin import (
     unregister_plugin,
 )
 
-__all__ = [
-    "LemminxPlugin",
-    "plugin_loaded",
-    "plugin_unloaded"
-]
+__all__ = ["LemminxPlugin", "plugin_loaded", "plugin_unloaded"]
 
 
 class BaseServerHandler:
@@ -83,7 +79,7 @@ class BaseServerHandler:
         try:
             with open(cls.metadata_file()) as fobj:
                 data = json.load(fobj)
-                return (int(data['timestamp']), data['version'], data['checksum'])
+                return (int(data["timestamp"]), data["version"], data["checksum"])
         except (FileNotFoundError, KeyError, TypeError, ValueError):
             return (0, "", "")
 
@@ -91,11 +87,14 @@ class BaseServerHandler:
     def save_metadata(cls, success, version, checksum):
         next_run_delay = (7 * 24 * 60 * 60) if success else (6 * 60 * 60)
         with open(cls.metadata_file(), "w") as fobj:
-            json.dump({
-                "timestamp": int(time.time()) + next_run_delay,
-                "version": version,
-                "checksum": checksum
-            }, fp=fobj)
+            json.dump(
+                {
+                    "timestamp": int(time.time()) + next_run_delay,
+                    "version": version,
+                    "checksum": checksum,
+                },
+                fp=fobj,
+            )
 
 
 class BinaryServerHandler(BaseServerHandler):
@@ -148,9 +147,7 @@ class BinaryServerHandler(BaseServerHandler):
         self.save_metadata(True, self.dest_version, self.dest_checksum)
 
     def on_pre_start(self, window, initiating_view, workspace_folders, configuration):
-        configuration.command = [
-            self.server_binary()
-        ]
+        configuration.command = [self.server_binary()]
         additional_args = LemminxPlugin.settings.get("server_binary_args", [])
         if additional_args:
             configuration.command.extend(additional_args)
@@ -159,7 +156,9 @@ class BinaryServerHandler(BaseServerHandler):
 
     def download_checksum(self):
         # download checksum file
-        response = urlopen(self.make_url(self.dest_version, "sha256"), timeout=2.0).read().decode("utf-8")
+        response = (
+            urlopen(self.make_url(self.dest_version, "sha256"), timeout=2.0).read().decode("utf-8")
+        )
 
         # parse checksum file
         match = re.search(r"^([a-f0-9]{64})\b", response, re.IGNORECASE)
@@ -235,9 +234,7 @@ class JavaServerHandler(BaseServerHandler):
         self.save_metadata(True, self.dest_version, self.dest_checksum)
 
     def on_pre_start(self, window, initiating_view, workspace_folders, configuration):
-        configuration.command = [
-            "java", "-jar", self.server_binary()
-        ]
+        configuration.command = ["java", "-jar", self.server_binary()]
         additional_args = LemminxPlugin.settings.get("java_vmargs", [])
         if additional_args:
             configuration.command.extend(additional_args)
@@ -246,7 +243,11 @@ class JavaServerHandler(BaseServerHandler):
 
     def download_checksum(self):
         # download checksum file
-        response = urlopen(self.make_url(self.dest_version, "jar.sha1"), timeout=2.0).read().decode("utf-8")
+        response = (
+            urlopen(self.make_url(self.dest_version, "jar.sha1"), timeout=2.0)
+            .read()
+            .decode("utf-8")
+        )
 
         # parse checksum file
         match = re.search(r"^([a-f0-9]{40})\b", response, re.IGNORECASE)
@@ -263,7 +264,7 @@ class JavaServerHandler(BaseServerHandler):
             match = re.search(
                 r"<release>\s*(\d+\.\d+\.\d+)\s*</release>",
                 urlopen(base_url + "/maven-metadata.xml").read().decode("utf-8"),
-                re.IGNORECASE | re.MULTILINE
+                re.IGNORECASE | re.MULTILINE,
             )
             if not match:
                 raise ValueError("Can't determine latest release!")
@@ -285,24 +286,24 @@ class LemminxPlugin(AbstractPlugin):
     file_associations = [
         {
             "pattern": "**/*.sublime-snippet",
-            "systemId": "$storage_uri/cache/sublime/sublime-snippet.xsd"
+            "systemId": "$storage_uri/cache/sublime/sublime-snippet.xsd",
         },
         {
             "pattern": "**/*.tmPreferences",
-            "systemId": "$storage_uri/cache/sublime/tmPreferences.xsd"
+            "systemId": "$storage_uri/cache/sublime/tmPreferences.xsd",
         },
         {
             "pattern": "**/*.hidden-tmPreferences",
-            "systemId": "$storage_uri/cache/sublime/tmPreferences.xsd"
+            "systemId": "$storage_uri/cache/sublime/tmPreferences.xsd",
         },
         {
             "pattern": "**/*.tmTheme",
-            "systemId": "$storage_uri/cache/sublime/tmTheme.xsd"
+            "systemId": "$storage_uri/cache/sublime/tmTheme.xsd",
         },
         {
             "pattern": "**/*.hidden-tmTheme",
-            "systemId": "$storage_uri/cache/sublime/tmTheme.xsd"
-        }
+            "systemId": "$storage_uri/cache/sublime/tmTheme.xsd",
+        },
     ]
 
     package_name: str = __spec__.parent
@@ -353,7 +354,7 @@ class LemminxPlugin(AbstractPlugin):
         # prepend a list of fixed file associations
         dotted.set(
             "xml.fileAssociations",
-            cls.file_associations + (dotted.get("xml.fileAssociations") or [])
+            cls.file_associations + (dotted.get("xml.fileAssociations") or []),
         )
         # adjust working dir to package storage directory
         dotted.set("xml.server.workDir", cls.server_path())
@@ -379,7 +380,7 @@ class LemminxPlugin(AbstractPlugin):
             "package_path": cls.package_path(),
             "storage_path": cls.server_path(),
             "package_uri": cls.package_uri(),
-            "storage_uri": cls.server_uri()
+            "storage_uri": cls.server_uri(),
         }
 
     # internal methods
@@ -437,13 +438,14 @@ class LemminxPlugin(AbstractPlugin):
             with zipfile.ZipFile(file=pkg_path) as pkg:
                 for zipinfo in pkg.infolist():
                     if zipinfo.filename.startswith("schemas/"):
-                        zipinfo.filename = zipinfo.filename[len("schemas/"):]
+                        zipinfo.filename = zipinfo.filename[len("schemas/") :]
                         if zipinfo.filename:
                             pkg.extract(zipinfo, path=dest_path)
         else:
             import shutil
+
             os.makedirs(dest_path, exist_ok=True)
-            src_path = os.path.join(pkg_path, 'schemas')
+            src_path = os.path.join(pkg_path, "schemas")
             for f in os.listdir(src_path):
                 shutil.copy(os.path.join(src_path, f), dest_path)
 
