@@ -305,6 +305,15 @@ class LemminxPlugin(AbstractPlugin):
         }
     ]
 
+    package_name: str = __spec__.parent
+    """
+    The package name on file system.
+
+    Main purpose is to provide python version acnostic package name for use
+    in path sensitive locations, to ensure plugin even works if user installs
+    package with different name.
+    """
+
     settings: sublime.Settings
     """
     Package settings
@@ -377,7 +386,7 @@ class LemminxPlugin(AbstractPlugin):
 
     @classmethod
     def package_dir(cls):
-        return os.path.join(sublime.packages_path(), __package__)
+        return os.path.join(sublime.packages_path(), cls.package_name)
 
     @classmethod
     def package_uri(cls):
@@ -385,7 +394,7 @@ class LemminxPlugin(AbstractPlugin):
 
     @classmethod
     def server_dir(cls):
-        return os.path.join(cls.storage_path(), __package__)
+        return os.path.join(cls.storage_path(), cls.package_name)
 
     @classmethod
     def server_uri(cls):
