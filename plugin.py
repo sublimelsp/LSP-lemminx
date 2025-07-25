@@ -128,12 +128,12 @@ class BinaryServerHandler(BaseServerHandler):
             raise RuntimeError()
 
         server_binary = self.server_binary()
-        server_dir, server_name = os.path.split(server_binary)
+        server_path, server_name = os.path.split(server_binary)
 
         # downlad and unzip server binary (ignore any other files)
         path, _ = urlretrieve(self.make_url(self.dest_version, "zip"))
         with zipfile.ZipFile(path) as zf:
-            zf.extract(server_name, server_dir)
+            zf.extract(server_name, server_path)
         os.remove(path)
 
         # validate binary's checksum
@@ -180,7 +180,7 @@ class BinaryServerHandler(BaseServerHandler):
 
     @staticmethod
     def metadata_file():
-        return os.path.join(LemminxPlugin.server_dir(), "binary_server.json")
+        return os.path.join(LemminxPlugin.server_path(), "binary_server.json")
 
     @staticmethod
     def server_binary():
@@ -189,7 +189,7 @@ class BinaryServerHandler(BaseServerHandler):
             "osx": "lemminx-osx-x86_64",
             "windows": "lemminx-win32.exe",
         }
-        return os.path.join(LemminxPlugin.server_dir(), name[sublime.platform()])
+        return os.path.join(LemminxPlugin.server_path(), name[sublime.platform()])
 
 
 class JavaServerHandler(BaseServerHandler):
@@ -273,11 +273,11 @@ class JavaServerHandler(BaseServerHandler):
 
     @staticmethod
     def metadata_file():
-        return os.path.join(LemminxPlugin.server_dir(), "java_server.json")
+        return os.path.join(LemminxPlugin.server_path(), "java_server.json")
 
     @staticmethod
     def server_binary():
-        return os.path.join(LemminxPlugin.server_dir(), "lemminx.jar")
+        return os.path.join(LemminxPlugin.server_path(), "lemminx.jar")
 
 
 class LemminxPlugin(AbstractPlugin):
@@ -339,7 +339,7 @@ class LemminxPlugin(AbstractPlugin):
 
     @classmethod
     def install_or_update(cls):
-        os.makedirs(cls.server_dir(), exist_ok=True)
+        os.makedirs(cls.server_path(), exist_ok=True)
         cls.server().install_or_update()
 
     @classmethod
@@ -356,7 +356,7 @@ class LemminxPlugin(AbstractPlugin):
             cls.file_associations + (dotted.get("xml.fileAssociations") or [])
         )
         # adjust working dir to package storage directory
-        dotted.set("xml.server.workDir", cls.server_dir())
+        dotted.set("xml.server.workDir", cls.server_path())
 
     # LemMinX specific methods
 
@@ -376,8 +376,8 @@ class LemminxPlugin(AbstractPlugin):
     @classmethod
     def additional_variables(cls):
         return {
-            "package_path": cls.package_dir(),
-            "storage_path": cls.server_dir(),
+            "package_path": cls.package_path(),
+            "storage_path": cls.server_path(),
             "package_uri": cls.package_uri(),
             "storage_uri": cls.server_uri()
         }
@@ -390,15 +390,15 @@ class LemminxPlugin(AbstractPlugin):
             from package_control import events  # type: ignore
 
             if events.remove(cls.package_name):
-                sublime.set_timeout_async(cls.remove_server_path, 1000)
+                sublime.set_timeout_async(cls.remove_server_dir, 1000)
         except ImportError:
             pass  # Package Control is not required.
 
     @classmethod
-    def remove_server_path(cls):
+    def remove_server_dir(cls):
         from shutil import rmtree
 
-        server_path = cls.server_dir()
+        server_path = cls.server_path()
         # Enable long path support on on Windows
         # to avoid errors when cleaning up paths with more than 256 chars.
         # see: https://stackoverflow.com/a/14076169/4643765
@@ -409,20 +409,20 @@ class LemminxPlugin(AbstractPlugin):
         rmtree(server_path, ignore_errors=True)
 
     @classmethod
-    def package_dir(cls):
+    def package_path(cls):
         return os.path.join(sublime.packages_path(), cls.package_name)
 
     @classmethod
     def package_uri(cls):
-        return filename_to_uri(cls.package_dir())
+        return filename_to_uri(cls.package_path())
 
     @classmethod
-    def server_dir(cls):
+    def server_path(cls):
         return os.path.join(cls.storage_path(), cls.package_name)
 
     @classmethod
     def server_uri(cls):
-        return filename_to_uri(cls.server_dir())
+        return filename_to_uri(cls.server_path())
 
     @classmethod
     def install_schemas(cls):
@@ -431,7 +431,7 @@ class LemminxPlugin(AbstractPlugin):
 
         LemMinX can't read schemas or catalogs from zipped packages.
         """
-        dest_path = os.path.join(cls.server_dir(), "cache", "sublime")
+        dest_path = os.path.join(cls.server_path(), "cache", "sublime")
         pkg_path = os.path.dirname(__file__)
         if ".sublime-package" in pkg_path:
             with zipfile.ZipFile(file=pkg_path) as pkg:
