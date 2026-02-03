@@ -55,20 +55,17 @@
 	"schemes": ["file", "buffer", "res"],
 
 	"initializationOptions": {
-		"settings": {
-			"xml.extension.jars": [],
-			"xml.logs.client": true,
-			// "xml.logs.file": "$storage_path/lemminx.log",
-			"xml.trace.server": "off",
-			"xml.telemetry.enabled": false,
-			"xml.useCache": true
-		},
-		"extendedClientCapabilities": {
-			"actionableNotificationSupport": false,
-			"openSettingsCommandSupport": false,
-			"bindingWizardSupport": false,
-			"shouldLanguageServerExitOnShutdown": true
-		}
+		"settings.xml.extension.jars": [],
+		"settings.xml.logs.client": true,
+		// "settings.xml.logs.file": "$storage_path/lemminx.log",
+		"settings.xml.telemetry.enabled": false,
+		"settings.xml.trace.server": "off",
+		"settings.xml.useCache": true,
+
+		"extendedClientCapabilities.actionableNotificationSupport": false,
+		"extendedClientCapabilities.openSettingsCommandSupport": false,
+		"extendedClientCapabilities.bindingWizardSupport": false,
+		"extendedClientCapabilities.shouldLanguageServerExitOnShutdown": true
 	},
 
 	"settings": {
