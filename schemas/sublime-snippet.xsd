@@ -8,14 +8,14 @@
 					<xs:annotation>
 						<xs:documentation>
 							<![CDATA[
-							<br>The snippet content which is added to the buffer.
-							<br>
 							<br>```XML
 							<br>&lt;content&gt;&lt;![CDATA[if (${1:condition}) {
 							<br>&nbsp;&nbsp;$0
 							<br>}
 							<br>]]&gt;&lt;/content&gt;
 							<br>```
+							<br>
+							<br>The snippet content which is added to the buffer.
 							<br>
 							<br>Note: You might want to wrap content in `&lt;![CDATA[]]&gt` to avoid XML escaping special characters and maintain whitespace and line breaks.
 							]]>
@@ -26,7 +26,13 @@
 				<xs:element name="tabTrigger" type="xs:string" minOccurs="0" maxOccurs="1">
 					<xs:annotation>
 						<xs:documentation>
-							The appreviation which is expanded by the snippet.
+							<![CDATA[
+							<br>```XML
+							<br>&lt;tabTrigger&gt;func&lt;/tabTrigger&gt;
+							<br>```
+							<br>
+							<br>The appreviation which is expanded by the snippet.
+							]]>
 						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
@@ -35,11 +41,11 @@
 					<xs:annotation>
 						<xs:documentation>
 							<![CDATA[
-							<br>The selector to restrict the scope in which the snippet is suggested by ST's auto completion engine.
-							<br>
 							<br>```XML
-							<br>&lt;selector&gt;source.c&lt;/selector&gt;
+							<br>&lt;scope&gt;source.c&lt;/scope&gt;
 							<br>```
+							<br>
+							<br>The selector to restrict the scope in which the snippet is suggested by ST's auto completion engine.
 							]]>
 						</xs:documentation>
 					</xs:annotation>
@@ -49,6 +55,10 @@
 					<xs:annotation>
 						<xs:documentation>
 							<![CDATA[
+							<br>```XML
+							<br>&lt;description&gt;This does something.&lt;/description&gt;
+							<br>```
+							<br>
 							<br>A brief description to describe what the snippet does.
 							<br>
 							<br>Note: It is displayed as annotation in auto completion panels.
