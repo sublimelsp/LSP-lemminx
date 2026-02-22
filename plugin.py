@@ -341,7 +341,7 @@ class LemminxPlugin(AbstractPlugin):
     @classmethod
     def install_or_update(cls) -> None:
         os.makedirs(cls.server_path(), exist_ok=True)
-        cls.server().install_or_update()
+        return cls.server().install_or_update()
 
     @classmethod
     def can_start(
@@ -351,19 +351,24 @@ class LemminxPlugin(AbstractPlugin):
         workspace_folders: list[WorkspaceFolder],
         configuration: ClientConfig,
     ) -> str | None:
-        cls.server().can_start(window, initiating_view, workspace_folders, configuration)
-
-    @classmethod
-    def on_settings_changed(cls, dotted: DottedDict) -> None:
-        # invalidate server object
-        cls._server = None
-        # prepend a list of fixed file associations
-        dotted.set(
+        # add hard-coded and dynamic settings (not advertised via schema)
+        configuration.settings.set(
             "xml.fileAssociations",
-            cls.file_associations + (dotted.get("xml.fileAssociations") or []),
+            cls.file_associations + (configuration.settings.get("xml.fileAssociations") or []),
         )
-        # adjust working dir to package storage directory
-        dotted.set("xml.server.workDir", cls.server_path())
+        configuration.settings.set("xml.server.workDir", cls.server_path())
+        configuration.settings.set("xml.telemetry.enabled", False)
+        # apply settings to initialization options
+        configuration.init_options.set("settings.xml", configuration.settings.get("xml"))
+        # apply hard coded initialization options
+        configuration.init_options.set("extendedClientCapabilities", {
+            "actionableNotificationSupport": False,
+            "openSettingsCommandSupport": False,
+            "bindingWizardSupport": False,
+            "shouldLanguageServerExitOnShutdown": True,
+        })
+        # forward request to server provider
+        return cls.server().can_start(window, initiating_view, workspace_folders, configuration)
 
     # LemMinX specific methods
 
