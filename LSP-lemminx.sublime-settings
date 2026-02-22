@@ -1,10 +1,17 @@
 {
 	"env": {
+		// The home directory of java runtime to use.
 		// "JAVA_HOME": "C:\\Program Files\\Java\\jre1.8.0_251",
+		// The hostname of the HTTP proxy server.
 		// "HTTP_PROXY_HOST": "",
-		// "HTTP_PROXY_PORT": "",
-		// "HTTP_PROXY_USERNAME": "",
+		// The password to use for the HTTP proxy.
 		// "HTTP_PROXY_PASSWORD": "",
+		// The port number of the HTTP proxy server.
+		// "HTTP_PROXY_PORT": "",
+		// The user name to use for the HTTP proxy.
+		// "HTTP_PROXY_USER": "",
+		// Enable debug logging for Lemminx.
+		// "LEMMINX_DEBUG": "",
 	},
 
 	// JavaVM arguments to run LemMinX with
@@ -28,10 +35,6 @@
 		// custom http proxy
 		// "-Dhttp.proxyHost=<proxy_host>",
 		// "-Dhttp.proxyPort=<proxy_port>",
-
-		// custom https proxy
-		// "-Dhttps.proxyHost=<proxy_host>",
-		// "-Dhttps.proxyPort=<proxy_port>",
 	],
 
 	// The LemMinX version to install. Valid values are fixed versions like `0.19.0` or `latest`.

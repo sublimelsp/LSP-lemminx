@@ -10,6 +10,75 @@
 					"definitions": {
 						"PluginConfig": {
 							"properties": {
+								"env": {
+									"type": "object",
+									"properties": {
+										"JAVA_HOME": {
+											"type": "string",
+											"default": "",
+											"markdownDescription": "The home directory of java runtime to use."
+										},
+										"HTTP_PROXY_HOST": {
+											"type": "string",
+											"default": "",
+											"markdownDescription": "The hostname of the HTTP proxy server."
+										},
+										"HTTP_PROXY_PASSWORD": {
+											"type": "string",
+											"default": "",
+											"markdownDescription": "The password to use for the HTTP proxy."
+										},
+										"HTTP_PROXY_PORT": {
+											"type": "string",
+											"default": "",
+											"markdownDescription": "The port number of the HTTP proxy server."
+										},
+										"HTTP_PROXY_USER": {
+											"type": "string",
+											"default": "",
+											"markdownDescription": "The user name to use for the HTTP proxy."
+										},
+										"LEMMINX_DEBUG": {
+											"type": "string",
+											"default": "",
+											"markdownDescription": "Enable debug logging for Lemminx."
+										},
+									}
+								},
+								"java_vmargs": {
+									"type": "array",
+									"default": [
+										"-Xmx128M",
+										"-XX:+UseG1GC",
+										"-XX:+UseStringDeduplication",
+										"-DwatchParentProcess=false",
+										"-Djava.net.useSystemProxies=true"
+									],
+									"items": {
+										"$ref": "sublime://settings/LSP-lemminx#/definitions/JavaVmArgValues"
+									},
+									"markdownDescription": "JavaVM arguments to run LemMinX with.\n\nRelevant only, if `\"server_binary\": false` is set."
+								},
+								"server_binary": {
+									"type": "boolean",
+									"default": true,
+									"markdownDescription": "If `true` compiled GraalVM binary is used, if supported by actual platform.\n\nIf `false` default JavaVM jar is used."
+								},
+								"server_binary_args": {
+									"type": "array",
+									"default": [
+										"-Xmx128M",
+									],
+									"items": {
+										"$ref": "sublime://settings/LSP-lemminx#/definitions/JavaVmArgValues"
+									},
+									"markdownDescription": "Command line arguments to supply to the binary server.\n\nPlease refer to https://www.graalvm.org/reference-manual/native-image/HostedvsRuntimeOptions.\n\nFor example, increase maximum memory that the server can use to 1 GB by adding `\"-Xmx1g\"`.\n\nRelevant only, if `\"server_binary\": true` is set."
+								},
+								"server_version": {
+									"type": "string",
+									"default": "latest",
+									"markdownDescription": "The LemMinX version to install. Valid values are fixed versions like `0.19.0` or `latest`."
+								},
 								"settings": {
 									"type": "object",
 									"additionalProperties": false,
@@ -593,6 +662,111 @@
 									}
 								}
 							}
+						},
+						"JavaVmArgValues": {
+							"type": "string",
+							"defaultSnippets": [
+								{
+									"label": "-Xmx<size><unit>",
+									"body": "-Xmx${1:128M}",
+									"markdownDescription": "Maximum RAM to use for VM."
+								},
+								{
+									"label": "-Djava.net.useSystemProxies=<boolean>",
+									"body": "-Djava.net.useSystemProxies=${1:<boolean>}",
+									"markdownDescription": "Use system proxy settings."
+								},
+								{
+									"label": "-Dhttp.proxyHost=<string>",
+									"body": "-Dhttp.proxyHost=${1:<string>}",
+									"markdownDescription": "The HTTP proxy to use. Defaults from environment variable `HTTP_PROXY_HOST`."
+								},
+								{
+									"label": "-Dhttp.proxyPort=<string>",
+									"body": "-Dhttp.proxyPort=${1:<string>}",
+									"markdownDescription": "The HTTP proxy port to use. Defaults from environment variable `HTTP_PROXY_PORT`."
+								},
+								{
+									"label": "-Dhttp.proxyPassword=<string>",
+									"body": "-Dhttp.proxyPassword=${1:<string>}",
+									"markdownDescription": "The password to use for the HTTP proxy. Defaults from environment variable `HTTP_PROXY_PASSWORD`."
+								},
+								{
+									"label": "-Dhttp.proxyUser=<string>",
+									"body": "-Dhttp.proxyUser=${1:<string>}",
+									"markdownDescription": "The user name to use for the HTTP proxy. Defaults from environment variable `HTTP_PROXY_USER`."
+								},
+								{
+									"label": "-Djava.home=<string>",
+									"body": "-Djava.home=${1:<string>}",
+									"markdownDescription": "The Java installation directory."
+								},
+								{
+									"label": "-Djava.runtime.name=<string>",
+									"body": "-Djava.runtime.name=${1:<string>}",
+									"markdownDescription": "The name of the Java Runtime Environment."
+								},
+								{
+									"label": "-Djava.vm.name=<string>",
+									"body": "-Djava.vm.name=${1:<string>}",
+									"markdownDescription": "The name of the Java Virtual Machine."
+								},
+								{
+									"label": "-Djava.version=<string>",
+									"body": "-Djava.version=${1:<string>}",
+									"markdownDescription": "The version of the Java Runtime Environment."
+								},
+								{
+									"label": "-Djdk.xml.entityExpansionLimit=<integer>",
+									"body": "-Djdk.xml.entityExpansionLimit=${1:<integer>}",
+									"markdownDescription": "The maximum number of XML entities to expand. Defaults to `64000`."
+								},
+								{
+									"label": "-Djdk.xml.maxOccur=<integer>",
+									"body": "-Djdk.xml.maxOccur=${1:<integer>}",
+									"markdownDescription": "The maximum number of XML elements to occur. Defaults to `5000`."
+								},
+								{
+									"label": "-Dlemminx.workdir=<string>",
+									"body": "-Dlemminx.workdir=${1:<string>}",
+									"markdownDescription": "The working directory for Lemminx. Defaults to `{-Duser.home}/.lemminx`, `{-Duser.dir}/.lemminx` or `{$PWD}/.lemminx`."
+								},
+								{
+									"label": "-Dlog.level=<all|info|warn|error|off>",
+									"body": "-Dlog.level=${1:<all|info|warn|error|off>}",
+									"markdownDescription": "The logging level. Defaults to `info`."
+								},
+								{
+									"label": "-Dos.arch=<string>",
+									"body": "-Dos.arch=${1:<string>}",
+									"markdownDescription": "The operating system architecture."
+								},
+								{
+									"label": "-Dos.name=<string>",
+									"body": "-Dos.name=${1:<string>}",
+									"markdownDescription": "The operating system name."
+								},
+								{
+									"label": "-Dos.version=<string>",
+									"body": "-Dos.version=${1:<string>}",
+									"markdownDescription": "The operating system version."
+								},
+								{
+									"label": "-Duser.dir=<string>",
+									"body": "-Duser.dir=${1:<string>}",
+									"markdownDescription": "The user directory."
+								},
+								{
+									"label": "-Duser.home=<string>",
+									"body": "-Duser.home=${1:<string>}",
+									"markdownDescription": "The user home directory."
+								},
+								{
+									"label": "-DwatchParentProcess=<boolean>",
+									"body": "-DwatchParentProcess=${1:<boolean>}",
+									"markdownDescription": "Whether to watch the parent process for termination. Defaults to `true`."
+								}
+							]
 						}
 					},
 					"allOf": [
