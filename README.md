@@ -11,7 +11,7 @@ See linked repository for more information.
 1. Install [LSP](https://packagecontrol.io/packages/LSP) and [LSP-lemminx](https://packagecontrol.io/Packages/LSP-lemminx) from Package Control.
 2. Restart Sublime Text.
 
-> **Note**
+> [!NOTE]
 >
 > The plugin ...
 > 1. does not distribute but download language server binaries from official sources.
