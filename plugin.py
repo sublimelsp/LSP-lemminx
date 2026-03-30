@@ -359,9 +359,9 @@ class LemminxPlugin(AbstractPlugin):
         configuration.settings.set("xml.server.workDir", cls.server_path())
         configuration.settings.set("xml.telemetry.enabled", False)
         # apply settings to initialization options
-        configuration.init_options.set("settings.xml", configuration.settings.get("xml"))
+        configuration.initialization_options.set("settings.xml", configuration.settings.get("xml"))
         # apply hard coded initialization options
-        configuration.init_options.set("extendedClientCapabilities", {
+        configuration.initialization_options.set("extendedClientCapabilities", {
             "actionableNotificationSupport": False,
             "openSettingsCommandSupport": False,
             "bindingWizardSupport": False,
