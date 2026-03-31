@@ -1,4 +1,15 @@
 from __future__ import annotations
+
+from io import BytesIO
+from LSP.plugin import AbstractPlugin
+from LSP.plugin import ClientConfig
+from LSP.plugin import filename_to_uri
+from LSP.plugin import register_plugin
+from LSP.plugin import unregister_plugin
+from LSP.plugin import WorkspaceFolder
+from urllib.request import Request as HttpRequest
+from urllib.request import urlopen
+from urllib.request import urlretrieve
 import contextlib
 import json
 import os
@@ -6,20 +17,6 @@ import re
 import sublime
 import time
 import zipfile
-
-from http.client import HTTPException
-from io import BytesIO
-from urllib.request import urlretrieve, urlopen, Request as HttpRequest
-
-from LSP.plugin import (
-    AbstractPlugin,
-    ClientConfig,
-    DottedDict,
-    WorkspaceFolder,
-    register_plugin,
-    filename_to_uri,
-    unregister_plugin,
-)
 
 __all__ = ["LemminxPlugin", "plugin_loaded", "plugin_unloaded"]
 
