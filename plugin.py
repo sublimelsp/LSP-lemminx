@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import contextlib
 import json
 import os
@@ -6,18 +7,15 @@ import re
 import sublime
 import time
 import zipfile
-
-from http.client import HTTPException
 from io import BytesIO
-from urllib.request import urlretrieve, urlopen, Request as HttpRequest
+from urllib.request import Request as HttpRequest, urlopen, urlretrieve
 
 from LSP.plugin import (
     AbstractPlugin,
     ClientConfig,
-    DottedDict,
     WorkspaceFolder,
-    register_plugin,
     filename_to_uri,
+    register_plugin,
     unregister_plugin,
 )
 
