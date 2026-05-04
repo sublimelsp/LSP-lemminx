@@ -165,7 +165,7 @@ class BinaryServerHandler(BaseServerHandler):
     @classmethod
     def download_url(cls) -> str:
         release_assets = {
-            "linux-x64": "lemminx-linux.zip",
+            "linux-x64": "lemminx-linux.zip" if version_tuple(cls.server_version) < version_tuple('0.29.1') else "lemminx-linux-x86_64.zip",
             "osx-arm64": "lemminx-osx-aarch_64.zip",
             "osx-x64": "lemminx-osx-x86_64.zip",
             "windows-x64": "lemminx-win32.zip",
@@ -183,7 +183,7 @@ class BinaryServerHandler(BaseServerHandler):
     @classmethod
     def server_binary(cls) -> str:
         names = {
-            "linux-x64": "lemminx-linux",
+            "linux-x64": "lemminx-linux" if version_tuple(cls.server_version) < version_tuple('0.29.1') else "lemminx-linux-x86_64",
             "osx-arm64": "lemminx-osx-aarch_64",
             "osx-x64": "lemminx-osx-x86_64",
             "windows-x64": "lemminx-win32.exe",
@@ -199,6 +199,16 @@ class BinaryServerHandler(BaseServerHandler):
         arch = sublime.arch()
         os = sublime.platform()
         return arch == "x64" or os == "osx" and arch == "arm64"
+
+
+def version_tuple(value: str) -> tuple[str, str, str]:
+    ''' Naive function to compare versions. '''
+    if value == 'latest':
+        return (999, 0, 0)
+    try:
+        return tuple(map(int, (value.split("."))))
+    except Exception:
+        return (0, 0, 0)
 
 
 class JavaServerHandler(BaseServerHandler):
