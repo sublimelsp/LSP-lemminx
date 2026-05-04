@@ -207,7 +207,7 @@ def version_tuple(value: str) -> tuple[str, str, str]:
         return (999, 0, 0)
     try:
         return tuple(map(int, (value.split("."))))
-    except Exception as e:
+    except Exception:
         return (0, 0, 0)
 
 
