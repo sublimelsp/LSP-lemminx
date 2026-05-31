@@ -201,12 +201,13 @@ class BinaryServerHandler(BaseServerHandler):
         return arch == "x64" or os == "osx" and arch == "arm64"
 
 
-def version_tuple(value: str) -> tuple[str, str, str]:
+def version_tuple(value: str) -> tuple[int, int, int]:
     ''' Naive function to compare versions. '''
     if value == 'latest':
         return (999, 0, 0)
     try:
-        return tuple(map(int, (value.split("."))))
+        v = value.split(".")
+        return (int(v[0]), int(v[1]), int(v[2]))
     except Exception:
         return (0, 0, 0)
 
