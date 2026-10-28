@@ -20,7 +20,8 @@
 	//   Copy the whole list to your user settings
 	//   in order to add, remove or modify single arguments.
 	"java_vmargs": [
-		"-Xmx128M",
+		// Max heap defaults to a quarter of available memory.
+		// "-Xmx128M",
 		"-XX:+UseG1GC",
 		"-XX:+UseStringDeduplication",
 		"-DwatchParentProcess=false",
