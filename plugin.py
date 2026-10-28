@@ -239,9 +239,11 @@ class JavaServerHandler(BaseServerHandler):
 
     @classmethod
     def configure(cls, configuration: ClientConfig) -> None:
-        configuration.command = ["java"]
-        configuration.command.extend(LemminxPlugin.root_settings.get("java_vmargs") or [])
-        configuration.command.extend(["-jar", cls.server_binary()])
+        configuration.command = [
+            "java",
+            *(LemminxPlugin.root_settings.get("java_vmargs") or []),
+            "-jar", cls.server_binary()
+        ]
 
     # server specific methods
 
